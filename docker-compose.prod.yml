@@ -9,10 +9,10 @@ services:
       - dashboard_group_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
-  dv_hasura_engine:
+  dv_core_hasura_engine:
     image: hasura/graphql-engine:v1.2.0
     depends_on:
-      - "dv_dashboard_db"
+      - "dv_core_db"
     restart: always
     networks:
       - internal
@@ -23,7 +23,7 @@ services:
     restart: always
     networks:
       - internal
-  app:
+  dv_core_app:
     ports:
       - "1205:80"
     env_file:
@@ -39,7 +39,7 @@ services:
     depends_on:
       - "dv_core_db"
       - "dv_ai"
-      - "dv_hasura_engine"
+      - "dv_core_hasura_engine"
 volumes:
   dashboard_group_data:
     external: true
