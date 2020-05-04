@@ -28,7 +28,7 @@ export interface fetchProjectById_projects {
    */
   jobs: fetchProjectById_projects_jobs[];
   actionText: string;
-  appended_descr: string;
+  appended_descr: string | null;
   bidError: string | null;
   buyer: number | null;
   confirm: number | null;

@@ -3,10 +3,10 @@ module.exports = {
     includes: ["./**/*.ts"],
     service: {
       name: "hasura",
-      url: "http://dashboard-db.devergroup.io/v1/graphql",
+      url: "https://core.devergroup.io/hasura/v1/graphql",
       // optional headers
       headers: {
-        "x-hasura-admin-secret": "Thinh123123@"
+        "x-hasura-admin-secret": "Devergroup1212@@"
       }
     }
   }

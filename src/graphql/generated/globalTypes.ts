@@ -251,7 +251,7 @@ export interface jobs_bool_exp {
   _or?: (jobs_bool_exp | null)[] | null;
   id?: Int_comparison_exp | null;
   isIgnored?: Boolean_comparison_exp | null;
-  projects?: projectsjobs_bool_exp | null;
+  projectsjobs?: projectsjobs_bool_exp | null;
   title?: String_comparison_exp | null;
 }
 
@@ -261,7 +261,7 @@ export interface jobs_bool_exp {
 export interface jobs_insert_input {
   id?: number | null;
   isIgnored?: boolean | null;
-  projects?: projectsjobs_arr_rel_insert_input | null;
+  projectsjobs?: projectsjobs_arr_rel_insert_input | null;
   title?: string | null;
 }
 

@@ -10,7 +10,7 @@
 export interface projectData {
   __typename: "projects";
   id: number;
-  appended_descr: string;
+  appended_descr: string | null;
   bidError: string | null;
   jobString: string;
   confirm: number | null;
