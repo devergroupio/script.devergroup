@@ -1,7 +1,7 @@
 import errorHandling from "~@/core/modules/error.module";
 
+import { CONFIG } from "~@/core/utils";
 import cronRunning from "~@/microservices/cron.running";
-
 errorHandling.listen();
 
 cronRunning();
@@ -12,19 +12,14 @@ import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:8080",
-      "https://dashboard.devergroup.io",
-      "http://dashboard.devergroup.io"
-    ]
+    origin: CONFIG.CORS
   })
 );
 
 app.use(
   "/hasura",
   createProxyMiddleware({
-    target: `http://${process.env.HASURA_ENDPOINT}`,
+    target: `http://${CONFIG.HASURA_ENDPOINT}`,
     pathRewrite: (path, req) => {
       const pathSlashArr = path.split("/").filter(str => str.length > 0);
       if (pathSlashArr.length <= 1) {
@@ -40,6 +35,6 @@ app.use(
   })
 );
 
-app.listen(process.env.PORT, () => {
+app.listen(CONFIG.PORT, () => {
   console.log("> listen on port", process.env.PORT);
 });
