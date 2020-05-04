@@ -22,6 +22,7 @@ export default async (projects: IFLProject[], settings: IprojectFilter) => {
 
 // tslint:disable-next-line:variable-name
 async function isHighRate(
+  // tslint:disable-next-line:variable-name
   _settings: IprojectFilter["filterSetting"],
   exchangerate: string
 ) {

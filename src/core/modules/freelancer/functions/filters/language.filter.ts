@@ -23,6 +23,7 @@ export default async (projects: IFLProject[], settings: IprojectFilter) => {
 
 // tslint:disable-next-line:variable-name
 async function isReadableLanguage(
+  // tslint:disable-next-line:variable-name
   _settings: IprojectFilter["filterSetting"],
   description: string
 ) {
