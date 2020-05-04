@@ -10,14 +10,12 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
-app.use(
-  cors({
-    origin: CONFIG.CORS
-  })
-);
 
 app.use(
   "/hasura",
+  cors({
+    origin: CONFIG.CORS
+  }),
   createProxyMiddleware({
     target: `http://${CONFIG.HASURA_ENDPOINT}`,
     pathRewrite: (path, req) => {
