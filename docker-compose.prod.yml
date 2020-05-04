@@ -5,7 +5,6 @@ services:
     restart: always
     networks:
       - internal
-      - freelancer
     volumes:
       - dashboard_group_data:/var/lib/postgresql/data
     environment:
@@ -16,7 +15,7 @@ services:
     restart: always
     networks:
       - internal
-      - freelancer
+
     env_file:
       - .environments/prod.env
   dv_ai:
@@ -24,16 +23,16 @@ services:
     restart: always
     networks:
       - internal
-      - freelancer
+
   app:
     ports:
-      - "1205:3000"
+      - "1205:80"
     env_file:
       - .environments/prod.env
     container_name: devergroup_core_app
     networks:
       - internal
-      - freelancer
+
       - jenkins
     build:
       context: .
@@ -48,7 +47,5 @@ volumes:
     external: true
 networks:
   ? internal
-  freelancer:
-    external: true
   jenkins:
     external: true
