@@ -1,4 +1,4 @@
-FROM node:14.1.0
+FROM node:12.16.3
 RUN ["mkdir", "/home/application"]
 COPY dist /home/application/dist
 COPY package.json /home/application/package.json

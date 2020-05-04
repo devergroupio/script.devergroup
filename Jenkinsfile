@@ -5,20 +5,20 @@ if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
             checkout scm
         }
         stage('install_package') {
-            docker.image('node:14.1.0').inside {
+            docker.image('node:12.16.3').inside {
                     sh "npm install"
                 }
         }
 
         stage('type_check') {
-          docker.image('node:14.1.0').inside {
+          docker.image('node:12.16.3').inside {
             sh "npm run typecheck"
             sh "npm run tsc"
           }
         }
 
         stage('unit_test') {
-          docker.image('node:14.1.0').inside {
+          docker.image('node:12.16.3').inside {
               configFileProvider([configFile(fileId: 'dv_core.dev.env', variable: 'ENV_FILE')]) {
                     sh "mkdir -p ./.environments"
                     sh "cp -rf $ENV_FILE ./.environments/dev.env"
