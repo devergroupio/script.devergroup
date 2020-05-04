@@ -1,0 +1,55 @@
+version: "3.6"
+services:
+  dv_dashboard_db:
+    image: postgres:12.2
+    restart: always
+    networks:
+      - internal
+      - freelancer
+    volumes:
+      - dashboard_group_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+  hasura:
+    container_name: dashboard_devergroup_hasura_engine
+    image: hasura/graphql-engine:v1.2.0
+    depends_on:
+      - "dv_dashboard_db"
+    restart: always
+    networks:
+      - internal
+      - freelancer
+      - jenkins
+    env_file:
+      - .environments/prod.env
+  ai:
+    image: deverpham/freelancer_ai_lib:latest
+    restart: always
+    networks:
+      - internal
+      - freelancer
+  app:
+    env_file:
+      - .environments/prod.env
+    container_name: dashboard_devergroup_script_app
+    networks:
+      - internal
+      - freelancer
+      - jenkins
+    build:
+      context: .
+      dockerfile: App.DockerFile
+    restart: always
+    depends_on:
+      - "db"
+      - "ai"
+      - "hasura"
+volumes:
+  dashboard_group_data:
+    external: true
+networks:
+  ? internal
+  freelancer:
+    external: true
+  jenkins:
+    external: true
