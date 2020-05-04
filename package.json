@@ -12,7 +12,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "tslint:prod": "tslint -c tslint.json -p tsconfig.json",
     ".node": "cross-env MODE=production node -r ./dotenv.config -r module-alias/register",
-    "build": "cross-env MODE=production next build && tsc -p tsconfig.server.json",
+    "build": "cross-env MODE=production tsc -p tsconfig.server.json",
     "db:backup": "yarn dc:dev exec -u postgres -T db pg_dump > ./backup/$(date +\"%m-%d-%y-%H-%m-%S\").dump",
     "db:restore": "yarn dc:dev exec -u postgres -T db psql < 25.3.dump",
     "db:prod:backup": "yarn dc:prod exec -u postgres -T db pg_dump > ./backup/$(date +\"%m-%d-%y-%H-%m-%S\").dump",
