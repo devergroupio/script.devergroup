@@ -10,12 +10,12 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
   dv_hasura_engine:
+    image: hasura/graphql-engine:v1.2.0
     depends_on:
       - "dv_dashboard_db"
     restart: always
     networks:
       - internal
-
     env_file:
       - .environments/prod.env
   dv_ai:
@@ -23,7 +23,6 @@ services:
     restart: always
     networks:
       - internal
-
   app:
     ports:
       - "1205:80"
@@ -32,7 +31,6 @@ services:
     container_name: devergroup_core_app
     networks:
       - internal
-
       - jenkins
     build:
       context: .
