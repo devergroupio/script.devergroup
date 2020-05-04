@@ -21,7 +21,7 @@
     "clean:log": "rm -rf logs",
     "typecheck": "npm run tslint:prod",
     "prebuild": "rm -rf dist",
-    "deploy:build": "npm run build && docker-compose -f docker-compose.prod.yml build app",
+    "deploy:build": "npm run build && docker-compose -f docker-compose.prod.yml build dv_core_app",
     "deploy:run": "docker-compose -f docker-compose.prod.yml up -d",
     "develop:sync:ssh": "./bin/sync-ssh-key.sh",
     "precise-commits": "precise-commits",
@@ -29,7 +29,7 @@
     "dc:dev": "docker-compose -f docker-compose.yml",
     "dc:prod": "docker-compose -f docker-compose.prod.yml",
     "deploy:run:db": "docker-compose -f docker-compose.prod.yml up -d postgres",
-    "deploy:sync:app": "yarn build && docker-compose -f docker-compose.prod.yml build app && docker-compose -f docker-compose.prod.yml up -d app "
+    "deploy:sync:app": "yarn build && docker-compose -f docker-compose.prod.yml build dv_core_app && docker-compose -f docker-compose.prod.yml up -d app "
   },
   "husky": {
     "hooks": {
