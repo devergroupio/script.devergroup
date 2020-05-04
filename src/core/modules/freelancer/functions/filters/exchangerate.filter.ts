@@ -3,21 +3,27 @@ import onUnQuanlity from "~@/core/modules/freelancer/hooks/fl_on_unquanlity_proj
 import { IFLProject } from "~@/types";
 
 export default async (projects: IFLProject[], settings: IprojectFilter) => {
-    const passedProjects = [];
-    await Promise.all(
-        projects.map(async project => {
-            const isPassed = await isHighRate(settings.filterSetting, project.exchangerate);
-            if (isPassed) {
-                passedProjects.push(project);
-            } else {
-                await onUnQuanlity(project, "exchange_rate");
-            }
-        })
-    );
-    return passedProjects;
+  const passedProjects = [];
+  await Promise.all(
+    projects.map(async project => {
+      const isPassed = await isHighRate(
+        settings.filterSetting,
+        project.exchangerate
+      );
+      if (isPassed) {
+        passedProjects.push(project);
+      } else {
+        await onUnQuanlity(project, "exchange_rate");
+      }
+    })
+  );
+  return passedProjects;
 };
 
 // tslint:disable-next-line:variable-name
-async function isHighRate(_settings: IprojectFilter["filterSetting"], exchangerate: string) {
-    return Number(exchangerate) >= _settings.exchange_rate;
+async function isHighRate(
+  _settings: IprojectFilter["filterSetting"],
+  exchangerate: string
+) {
+  return Number(exchangerate) >= _settings.exchange_rate;
 }

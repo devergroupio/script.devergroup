@@ -26,6 +26,8 @@ services:
       - internal
       - freelancer
   app:
+    ports:
+      - "1205:3000"
     env_file:
       - .environments/prod.env
     container_name: devergroup_core_app

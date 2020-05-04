@@ -36,30 +36,30 @@ import { CONFIG } from "~@/core/utils";
 // module.exports = translateAPIService;
 import axios from "axios";
 export const detectLang = async (text: string) => {
-    try {
-        const {
-            data: { message, status }
-        } = await axios.post<{
-            status: string;
-            message: string;
-        }>(
-            `${CONFIG.FREELANCER_AI_ENDPOINT}/detect`,
-            qs.stringify({
-                text
-            })
-        );
-        console.log("freelancer_ai_lib: ", message, status);
-        if (status === "error") {
-            throw new Error(message);
-        }
-        return message;
-    } catch (err) {
-        throw new Error(err);
+  try {
+    const {
+      data: { message, status }
+    } = await axios.post<{
+      status: string;
+      message: string;
+    }>(
+      `${CONFIG.FREELANCER_AI_ENDPOINT}/detect`,
+      qs.stringify({
+        text
+      })
+    );
+    console.log("freelancer_ai_lib: ", message, status);
+    if (status === "error") {
+      throw new Error(message);
     }
+    return message;
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 export const translate = async (text: string) => {
-    const { text: resultText } = await translateAPI(text, { to: "vi" }); // @TODO: handling Error
-    console.log("translated", resultText);
-    return resultText;
+  const { text: resultText } = await translateAPI(text, { to: "vi" }); // @TODO: handling Error
+  console.log("translated", resultText);
+  return resultText;
 };

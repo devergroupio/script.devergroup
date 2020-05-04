@@ -68,7 +68,9 @@ export const SCRIPT_CONTENT = async () => {
       }
     }
   });
-  if (projects.length <= 0) { return; }
+  if (projects.length <= 0) {
+    return;
+  }
   const projectIDs = projects.reduce<number[]>((pre, current) => {
     return [...pre, current.id];
   }, []);
