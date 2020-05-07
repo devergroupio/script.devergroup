@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
   dv_core_hasura_engine:
-    image: hasura/graphql-engine:v1.2.0
+    image: hasura/graphql-engine:v1.2.1
     depends_on:
       - "dv_core_db"
     restart: always
