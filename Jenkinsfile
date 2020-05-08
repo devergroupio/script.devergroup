@@ -45,8 +45,9 @@ if(env.BRANCH_NAME == 'master') {
     }
     sh "chmod +x scripts/deploy.sh"
     sh "./scripts/deploy.sh"
-    sh "docker-compose -f docker-compose.prod.yml up -d"
+    sh "docker-compose -f docker-compose.slave.yml up -d"
   }
+
   node ('master') {
     checkout scm
     configFileProvider([configFile(fileId: 'dv_core.prod.env', variable: 'ENV_FILE')]) {

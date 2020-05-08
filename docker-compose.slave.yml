@@ -1,0 +1,10 @@
+version: "3.6"
+services:
+  dv_core_app:
+    env_file:
+      - .environments/prod.env
+    container_name: devergroup_core_script_app
+    build:
+      context: .
+      dockerfile: App.DockerFile
+    restart: always
