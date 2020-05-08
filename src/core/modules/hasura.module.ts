@@ -46,7 +46,7 @@ const initApollo = <T>(
     cache: new InMemoryCache().restore(initialState || {})
   });
 };
-const GRAPHQL_HTTP_ENDPOINT = `http://${CONFIG.HASURA_ENDPOINT}/v1/graphql`;
+const GRAPHQL_HTTP_ENDPOINT = `${CONFIG.HASURA_ENDPOINT}/v1/graphql`;
 const getClient = <T>(initialState?: T) => {
   return initApollo<T>(
     {

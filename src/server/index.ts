@@ -17,7 +17,7 @@ app.use(
     origin: CONFIG.CORS
   }),
   createProxyMiddleware({
-    target: `http://${CONFIG.HASURA_ENDPOINT}`,
+    target: CONFIG.HASURA_ENDPOINT,
     pathRewrite: (path, req) => {
       const pathSlashArr = path.split("/").filter(str => str.length > 0);
       if (pathSlashArr.length <= 1) {

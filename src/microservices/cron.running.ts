@@ -3,6 +3,7 @@ import glob from "glob";
 import path from "path";
 import gqlClient from "~@/core/modules/hasura.module";
 import logger from "~@/core/modules/log.module";
+import { CONFIG } from "~@/core/utils";
 import {
   fetchScriptByUid,
   fetchScriptByUidVariables
@@ -18,13 +19,17 @@ import { FETCH_SCRIPT_BY_UID } from "~@/graphql/query";
 export const getScripts = async () => {
   const scriptPattern = path.join(__dirname, "./scripts/*.script.+(js|ts)");
   const files = glob.sync(scriptPattern);
-  const serializedScripts = files.map(file => {
+  let serializedScripts = files.map(file => {
     const uid = path.basename(file).split(".")[0];
     return {
       uid,
       path: file
     };
   });
+  serializedScripts = serializedScripts.filter(script => {
+    return !CONFIG.EXCLUDE_SCRIPTS.includes(script.uid);
+  });
+  console.log(serializedScripts);
   await gqlClient.mutate<upsertScripts, upsertScriptsVariables>({
     mutation: UPSERT_SCRIPTS,
     variables: {

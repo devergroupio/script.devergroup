@@ -75,6 +75,7 @@ export interface IEnv {
   FREELANCER_HOST: string;
   PORT: number;
   FREELANCER_APP_COOKIE: string;
+  EXCLUDE_SCRIPTS: string[];
   MODE: string;
 }
 
@@ -89,6 +90,7 @@ export const CONFIG: IEnv = {
   FREELANCER_HOST: "https://www.freelancer.com/",
   HASURA_ENDPOINT: process.env.HASURA_ENDPOINT,
   CORS: process.env.CORS.split(","),
+  EXCLUDE_SCRIPTS: process.env.EXCLUDE_SCRIPTS.split(","),
   PORT: Number(process.env.PORT),
   HASURA_GRAPHQL_ADMIN_SECRET: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
   HASURA_GRAPHQL_JWT_SECRET: JSON.parse(process.env.HASURA_GRAPHQL_JWT_SECRET)

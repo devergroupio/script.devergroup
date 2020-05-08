@@ -1,5 +1,4 @@
 if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
-
     node('worker') {
         stage('checkout') {
             checkout scm
@@ -38,6 +37,16 @@ if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
 }
 
 if(env.BRANCH_NAME == 'master') {
+  node('production_slave') {
+    checkout scm
+    configFileProvider([configFile(fileId: 'dv_core.slave.env', variable: 'ENV_FILE')]) {
+                    sh "mkdir -p ./.environments"
+                    sh "cp -rf $ENV_FILE .environments/prod.env"
+    }
+    sh "chmod +x scripts/deploy.sh"
+    sh "./scripts/deploy.sh"
+    sh "docker-compose -f docker-compose.prod.yml up -d"
+  }
   node ('master') {
     checkout scm
     configFileProvider([configFile(fileId: 'dv_core.prod.env', variable: 'ENV_FILE')]) {
