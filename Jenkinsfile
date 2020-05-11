@@ -43,8 +43,8 @@ if(env.BRANCH_NAME == 'master') {
                     sh "mkdir -p ./.environments"
                     sh "cp -rf $ENV_FILE .environments/prod.env"
     }
-    sh "chmod +x scripts/deploy.sh"
-    sh "./scripts/deploy.sh"
+    sh "chmod +x scripts/deploy.slave.sh"
+    sh "./scripts/deploy.slave.sh"
     sh "docker-compose -f docker-compose.slave.yml up -d"
   }
 
