@@ -79,10 +79,12 @@ export interface IEnv {
   EXCLUDE_SCRIPTS: string[];
   MODE: string;
   SOCKET_HASH: string;
+  IS_ENABLE_API: boolean;
 }
 
 export const CONFIG: IEnv = {
   IS_LISTEN_WS: Number(process.env.IS_LISTEN_WS) === 1,
+  IS_ENABLE_API: Number(process.env.IS_ENABLE_API) === 1,
   SOCKET_HASH: process.env.SOCKET_HASH,
   FREELANCER_API_FREELANCER_GETJOB:
     "https://www.freelancer.com/ajax/notify/live-feed/pre-populated.php",
