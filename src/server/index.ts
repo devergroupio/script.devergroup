@@ -10,7 +10,11 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
-
+import { listen } from "~@/microservices/socket";
+// Listen webSocket
+if (CONFIG.IS_LISTEN_WS) {
+  listen();
+}
 app.use(
   "/hasura",
   cors({

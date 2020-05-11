@@ -8,6 +8,59 @@
 //==============================================================
 
 /**
+ * unique or primary key constraints on table "chat_attachment"
+ */
+export enum chat_attachment_constraint {
+  chat_attachment_pkey = "chat_attachment_pkey",
+}
+
+/**
+ * update columns of table "chat_attachment"
+ */
+export enum chat_attachment_update_column {
+  _data = "_data",
+  created_at = "created_at",
+  message_id = "message_id",
+  thread_id = "thread_id",
+  user_id = "user_id",
+}
+
+/**
+ * unique or primary key constraints on table "chat_log"
+ */
+export enum chat_log_constraint {
+  chat_log_pkey = "chat_log_pkey",
+}
+
+/**
+ * update columns of table "chat_log"
+ */
+export enum chat_log_update_column {
+  _data = "_data",
+  created_at = "created_at",
+  id = "id",
+  is_readed = "is_readed",
+  thread_id = "thread_id"
+}
+
+/**
+ * unique or primary key constraints on table "chat_thread"
+ */
+export enum chat_thread_constraint {
+  chat_thread_pkey = "chat_thread_pkey",
+}
+
+/**
+ * update columns of table "chat_thread"
+ */
+export enum chat_thread_update_column {
+  customer_id = "customer_id",
+  id = "id",
+  project_id = "project_id",
+  updated_at = "updated_at",
+}
+
+/**
  * unique or primary key constraints on table "jobs"
  */
 export enum jobs_constraint {
@@ -193,6 +246,21 @@ export interface String_comparison_exp {
 }
 
 /**
+ * expression to compare columns of type bigint. All fields are combined with logical 'AND'.
+ */
+export interface bigint_comparison_exp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in?: any[] | null;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin?: any[] | null;
+}
+
+/**
  * Boolean expression to filter rows from the table "bot_settings_bidsettings". All fields are combined with a logical 'AND'.
  */
 export interface bot_settings_bidsettings_bool_exp {
@@ -225,6 +293,106 @@ export interface bot_training_nottasks_insert_input {
   id?: number | null;
   phase?: string | null;
   updated_at?: any | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "chat_attachment". All fields are combined with a logical 'AND'.
+ */
+export interface chat_attachment_bool_exp {
+  _and?: (chat_attachment_bool_exp | null)[] | null;
+  _data?: jsonb_comparison_exp | null;
+  _not?: chat_attachment_bool_exp | null;
+  _or?: (chat_attachment_bool_exp | null)[] | null;
+  created_at?: timestamptz_comparison_exp | null;
+  message_id?: bigint_comparison_exp | null;
+  thread_id?: Int_comparison_exp | null;
+  user_id?: bigint_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "chat_attachment"
+ */
+export interface chat_attachment_insert_input {
+  _data?: any | null;
+  created_at?: any | null;
+  message_id?: any | null;
+  thread_id?: number | null;
+  user_id?: any | null;
+}
+
+/**
+ * on conflict condition type for table "chat_attachment"
+ */
+export interface chat_attachment_on_conflict {
+  constraint: chat_attachment_constraint;
+  update_columns: chat_attachment_update_column[];
+  where?: chat_attachment_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "chat_log". All fields are combined with a logical 'AND'.
+ */
+export interface chat_log_bool_exp {
+  _and?: (chat_log_bool_exp | null)[] | null;
+  _data?: jsonb_comparison_exp | null;
+  _not?: chat_log_bool_exp | null;
+  _or?: (chat_log_bool_exp | null)[] | null;
+  created_at?: timestamptz_comparison_exp | null;
+  id?: Int_comparison_exp | null;
+  is_readed?: Boolean_comparison_exp | null;
+  thread_id?: bigint_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "chat_log"
+ */
+export interface chat_log_insert_input {
+  _data?: any | null;
+  created_at?: any | null;
+  id?: number | null;
+  is_readed?: boolean | null;
+  thread_id?: any | null;
+}
+
+/**
+ * on conflict condition type for table "chat_log"
+ */
+export interface chat_log_on_conflict {
+  constraint: chat_log_constraint;
+  update_columns: chat_log_update_column[];
+  where?: chat_log_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "chat_thread". All fields are combined with a logical 'AND'.
+ */
+export interface chat_thread_bool_exp {
+  _and?: (chat_thread_bool_exp | null)[] | null;
+  _not?: chat_thread_bool_exp | null;
+  _or?: (chat_thread_bool_exp | null)[] | null;
+  customer_id?: bigint_comparison_exp | null;
+  id?: bigint_comparison_exp | null;
+  project_id?: bigint_comparison_exp | null;
+  updated_at?: timestamptz_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "chat_thread"
+ */
+export interface chat_thread_insert_input {
+  customer_id?: any | null;
+  id?: any | null;
+  project_id?: any | null;
+  updated_at?: any | null;
+}
+
+/**
+ * on conflict condition type for table "chat_thread"
+ */
+export interface chat_thread_on_conflict {
+  constraint: chat_thread_constraint;
+  update_columns: chat_thread_update_column[];
+  where?: chat_thread_bool_exp | null;
 }
 
 /**

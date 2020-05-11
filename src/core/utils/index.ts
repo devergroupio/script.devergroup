@@ -62,6 +62,7 @@ export const serializeProject = (
 };
 
 export interface IEnv {
+  IS_LISTEN_WS: boolean;
   HASURA_GRAPHQL_JWT_SECRET: string;
   FREELANCER_AI_ENDPOINT: string;
   HASURA_GRAPHQL_ADMIN_SECRET: string;
@@ -77,9 +78,12 @@ export interface IEnv {
   FREELANCER_APP_COOKIE: string;
   EXCLUDE_SCRIPTS: string[];
   MODE: string;
+  SOCKET_HASH: string;
 }
 
 export const CONFIG: IEnv = {
+  IS_LISTEN_WS: Number(process.env.IS_LISTEN_WS) === 1,
+  SOCKET_HASH: process.env.SOCKET_HASH,
   FREELANCER_API_FREELANCER_GETJOB:
     "https://www.freelancer.com/ajax/notify/live-feed/pre-populated.php",
 
