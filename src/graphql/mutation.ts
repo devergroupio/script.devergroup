@@ -98,6 +98,17 @@ export const UPDATE_PROJECT_STATUS = gql`
   }
 `;
 
+export const INSERT_THREAD = gql`
+  mutation upsertThread(
+    $object: chat_thread_insert_input!
+    $on_conflict: chat_thread_on_conflict
+  ) {
+    insert_chat_thread_one(object: $object, on_conflict: $on_conflict) {
+      id
+    }
+  }
+`;
+
 export const UPDATE_PROJECT_BID_DATA = gql`
   mutation updateProjectBD(
     $id: Int
@@ -136,6 +147,17 @@ export const INSERT_CHAT_LOG = gql`
   ) {
     insert_chat_log(objects: $data, on_conflict: $on_conflict) {
       affected_rows
+    }
+  }
+`;
+
+export const INSERT_CHAT_ATTACHMENT = gql`
+  mutation insertChatAttachMent(
+    $object: chat_attachment_insert_input!
+    $conflict: chat_attachment_on_conflict
+  ) {
+    insert_chat_attachment_one(object: $object, on_conflict: $conflict) {
+      message_id
     }
   }
 `;

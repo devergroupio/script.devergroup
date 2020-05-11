@@ -1,7 +1,24 @@
 import fs from "fs";
+import _ from "lodash";
 import moment from "moment";
 import SockJS from "sockjs-client";
+import hsrClient from "~@/core/modules/hasura.module";
 import { saveMessageLog } from "~@/core/utils/websocket";
+import {
+  chat_attachment_constraint,
+  chat_attachment_update_column,
+  chat_thread_constraint,
+  chat_thread_update_column
+} from "~@/graphql/generated/globalTypes";
+import {
+  insertChatAttachMent,
+  insertChatAttachMentVariables
+} from "~@/graphql/generated/insertChatAttachMent";
+import {
+  upsertThread,
+  upsertThreadVariables
+} from "~@/graphql/generated/upsertThread";
+import { INSERT_CHAT_ATTACHMENT, INSERT_THREAD } from "~@/graphql/mutation";
 let singleSock = null;
 const onClose = () => {
   console.log("retry connect");
@@ -9,8 +26,24 @@ const onClose = () => {
 };
 const OUR_USER_ID = 26076146;
 const onCustomerReply = body => {
+  const saveThread = async () =>
+    hsrClient.mutate<upsertThread, upsertThreadVariables>({
+      mutation: INSERT_THREAD,
+      variables: {
+        object: {
+          id: body.data.thread.id,
+          project_id: _.get(body, "data.thread.thread.context.id", null),
+          customer_id: _.get(body, "data.thread.thread.owner", null),
+          updated_at: moment.utc()
+        },
+        on_conflict: {
+          update_columns: [chat_thread_update_column.updated_at],
+          constraint: chat_thread_constraint.chat_thread_pkey
+        }
+      }
+    });
   console.log("on customer reply");
-  saveMessageLog(body);
+  Promise.all([saveThread(), saveMessageLog(body)]);
 };
 
 const onUserTyping = body => {
@@ -19,6 +52,24 @@ const onUserTyping = body => {
 
 const onUserRead = body => {
   console.log("on user read message");
+};
+const onUserUploadAttachMent = body => {
+  hsrClient.mutate<insertChatAttachMent, insertChatAttachMentVariables>({
+    mutation: INSERT_CHAT_ATTACHMENT,
+    variables: {
+      object: {
+        _data: body,
+        message_id: body.data.message_id,
+        thread_id: body.data.thread_id,
+        user_id: body.data.from_user
+      },
+      conflict: {
+        constraint: chat_attachment_constraint.chat_attachment_pkey,
+        update_columns: [chat_attachment_update_column._data]
+      }
+    }
+  });
+  console.log("on user upload attachment");
 };
 const deliveryResponse = message => {
   console.log("message reached");
@@ -38,6 +89,9 @@ const deliveryResponse = message => {
       }
       case "user_read": {
         return onUserRead(data);
+      }
+      case "attach": {
+        return onUserUploadAttachMent(data);
       }
     }
   }

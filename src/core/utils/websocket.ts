@@ -5,6 +5,7 @@ import {
   insertChatLogVariables
 } from "~@/graphql/generated/insertChatLog";
 import { INSERT_CHAT_LOG } from "~@/graphql/mutation";
+
 export const saveMessageLog = messageBody => {
   const threadId = messageBody.data.thread.id;
   return hsrClient.mutate<insertChatLog, insertChatLogVariables>({
