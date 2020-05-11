@@ -1,7 +1,9 @@
 import errorHandling from "~@/core/modules/error.module";
 
+import bodyParser from "body-parser";
 import { CONFIG } from "~@/core/utils";
 import cronRunning from "~@/microservices/cron.running";
+
 errorHandling.listen();
 
 cronRunning();
@@ -22,7 +24,14 @@ if (CONFIG.IS_ENABLE_API) {
       origin: CONFIG.CORS
     })
   );
-  app.use("/api", api);
+  app.use(
+    "/api",
+    bodyParser.json({}),
+    bodyParser.urlencoded({
+      extended: true
+    }),
+    api
+  );
   app.use(
     "/hasura",
     createProxyMiddleware({

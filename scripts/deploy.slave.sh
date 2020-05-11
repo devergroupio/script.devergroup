@@ -4,4 +4,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 nvm install
 nvm use
 npm install
-npm run build && docker-compose -f docker-compose.slave.yml build devergroup_core_script_app
+npm run build && docker-compose -f docker-compose.slave.yml build dv_core_app

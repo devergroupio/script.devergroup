@@ -1,19 +1,28 @@
 import bcrypt from "bcrypt";
+// tslint:disable-next-line:no-var-requires
 import bodyParser from "body-parser";
 import cors from "cors";
 import Express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
+import moment from "moment";
+import multer from "multer";
+import qs from "querystring";
+import request from "request";
 import * as yup from "yup";
 import gqlClient from "~@/core/modules/hasura.module";
 import httpClient from "~@/core/modules/http.module";
 import { CONFIG } from "~@/core/utils";
+const tempUpload = multer({
+  storage: multer.memoryStorage()
+});
+
 import {
   fetchUsersByEmail,
   fetchUsersByEmailVariables
 } from "~@/graphql/generated/fetchUsersByEmail";
 import { FETCH_USERS_BY_EMAILS } from "~@/graphql/query";
-const app = Express();
+const app = Express.Router();
 
 app.use(
   cors({
@@ -108,9 +117,96 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
 };
 app.post("/authorize", apiAuthorizeHanlder);
 
-app.get("/attachment/:message_id/:attachment_id/:file", (req, res) => {
-  const messageId = req.query.messageId;
-  const attachmentId = req.query.attachmentId;
-  const file = req.query.file;
+app.get("/attachment/:message_id/:file", async (req, res) => {
+  const messageId = req.params.message_id;
+  const file = req.params.file;
+  try {
+    const { data } = await httpClient.axios.get(
+      `https://www.freelancer.com/api/messages/0.1/messages/${messageId}/${file}`,
+      {
+        responseType: "arraybuffer"
+      }
+    );
+    return res.end(data);
+  } catch (err) {
+    res.status(500).send({
+      isError: true,
+      message: err.toString()
+    });
+  }
+});
+app.post(
+  "/message-attachment/:thread_id",
+  tempUpload.single("file"),
+
+  async (req, res) => {
+    const threadID = req.params.thread_id;
+    try {
+      request.post(
+        `https://www.freelancer.com/api/messages/0.1/threads/${threadID}/messages/?compact=true&new_errors=true`,
+        {
+          formData: {
+            "files[]": {
+              value: req.file.buffer,
+              options: {
+                filename: req.file.originalname,
+                contentType: req.file.mimetype
+              }
+            }
+          },
+          headers: httpClient.getHeaders()
+        },
+        (err, response) => {
+          if (err) {
+            return res.status(500).json({
+              isError: true,
+              message: err.toString()
+            });
+          } else {
+            return res.json({
+              isError: false,
+              message: response.body,
+              client_message_id: moment.utc().format("X")
+            });
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({
+        isError: true,
+        message: err.toString()
+      });
+    }
+  }
+);
+app.post("/message/:thread_id", async (req, res) => {
+  const threadID = req.params.thread_id;
+  const message = req.body.message;
+  console.log(message, threadID);
+  try {
+    const { data } = await httpClient.axios.post(
+      `https://www.freelancer.com/api/messages/0.1/threads/${threadID}/messages/?compact=true&new_errors=true`,
+      qs.stringify({
+        message,
+        source: "chat_box"
+      }),
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded;charset=UTF-8"
+        }
+      }
+    );
+    return res.json({
+      isError: false,
+      message: data,
+      client_message_id: moment.utc().format("X")
+    });
+  } catch (err) {
+    res.status(500).send({
+      isError: true,
+      message: err.toString()
+    });
+  }
 });
 export default app;
