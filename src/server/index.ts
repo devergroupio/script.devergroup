@@ -4,14 +4,15 @@ import { CONFIG } from "~@/core/utils";
 import cronRunning from "~@/microservices/cron.running";
 errorHandling.listen();
 
-// cronRunning();
+cronRunning();
 
 import express from "express";
 const app = express();
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { listen } from "~@/microservices/socket";
-if (true) {
+// Listen webSocket
+if (CONFIG.IS_LISTEN_WS) {
   listen();
 }
 app.use(

@@ -1,9 +1,10 @@
-import fs from "fs";
 import _ from "lodash";
 import moment from "moment";
 import SockJS from "sockjs-client";
 import hsrClient from "~@/core/modules/hasura.module";
+import { CONFIG } from "~@/core/utils";
 import { saveMessageLog } from "~@/core/utils/websocket";
+
 import {
   chat_attachment_constraint,
   chat_attachment_update_column,
@@ -19,12 +20,12 @@ import {
   upsertThreadVariables
 } from "~@/graphql/generated/upsertThread";
 import { INSERT_CHAT_ATTACHMENT, INSERT_THREAD } from "~@/graphql/mutation";
-let singleSock = null;
+// let singleSock = null;
 const onClose = () => {
   console.log("retry connect");
   listen();
 };
-const OUR_USER_ID = 26076146;
+// const OUR_USER_ID = 26076146;
 const onCustomerReply = body => {
   const saveThread = async () =>
     hsrClient.mutate<upsertThread, upsertThreadVariables>({
@@ -73,10 +74,7 @@ const onUserUploadAttachMent = body => {
 };
 const deliveryResponse = message => {
   console.log("message reached");
-  fs.writeFileSync(
-    process.cwd() + "/logs/" + moment().format("x") + ".json",
-    message
-  );
+
   const msg = JSON.parse(message);
   if (msg.channel === "user") {
     const { body: data } = msg;
@@ -96,9 +94,9 @@ const deliveryResponse = message => {
     }
   }
 };
+
 export const listen = () => {
   const sock = new SockJS("https://notifications.freelancer.com");
-  singleSock = sock;
   sock.onopen = () => {
     console.log("init socket");
     const authenticate = () => {
@@ -106,7 +104,7 @@ export const listen = () => {
         JSON.stringify({
           channel: "auth",
           body: {
-            hash2: "AH4ywNe1a6F+AHRXcSrm3dyTi1cf6dXt9YOebBf3jSE=",
+            hash2: CONFIG.SOCKET_HASH,
             user_id: 26076146
           }
         })

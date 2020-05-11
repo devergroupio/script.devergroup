@@ -40,7 +40,7 @@ export enum chat_log_update_column {
   created_at = "created_at",
   id = "id",
   is_readed = "is_readed",
-  thread_id = "thread_id",
+  thread_id = "thread_id"
 }
 
 /**
