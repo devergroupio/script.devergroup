@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import _ from "lodash";
 import * as yup from "yup";
 import gqlClient from "~@/core/modules/hasura.module";
+import httpClient from "~@/core/modules/http.module";
 import { CONFIG } from "~@/core/utils";
 import {
   fetchUsersByEmail,
@@ -105,6 +106,11 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
     });
   }
 };
-app.post("/api/authorize", apiAuthorizeHanlder);
+app.post("/authorize", apiAuthorizeHanlder);
 
+app.get("/attachment/:message_id/:attachment_id/:file", (req, res) => {
+  const messageId = req.query.messageId;
+  const attachmentId = req.query.attachmentId;
+  const file = req.query.file;
+});
 export default app;

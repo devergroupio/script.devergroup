@@ -10,33 +10,39 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import api from "~@/microservices/api";
 import { listen } from "~@/microservices/socket";
 // Listen webSocket
 if (CONFIG.IS_LISTEN_WS) {
   listen();
 }
-app.use(
-  "/hasura",
-  cors({
-    origin: CONFIG.CORS
-  }),
-  createProxyMiddleware({
-    target: CONFIG.HASURA_ENDPOINT,
-    pathRewrite: (path, req) => {
-      const pathSlashArr = path.split("/").filter(str => str.length > 0);
-      if (pathSlashArr.length <= 1) {
-        return "/";
-      }
-      pathSlashArr.shift();
+if (CONFIG.IS_ENABLE_API) {
+  app.use(
+    cors({
+      origin: CONFIG.CORS
+    })
+  );
+  app.use("/api", api);
+  app.use(
+    "/hasura",
+    createProxyMiddleware({
+      target: CONFIG.HASURA_ENDPOINT,
+      pathRewrite: (path, req) => {
+        const pathSlashArr = path.split("/").filter(str => str.length > 0);
+        if (pathSlashArr.length <= 1) {
+          return "/";
+        }
+        pathSlashArr.shift();
 
-      return "/" + pathSlashArr.join("/");
-    },
+        return "/" + pathSlashArr.join("/");
+      },
 
-    ws: true,
-    followRedirects: true
-  })
-);
+      ws: true,
+      followRedirects: true
+    })
+  );
 
-app.listen(CONFIG.PORT, () => {
-  console.log("> listen on port", process.env.PORT);
-});
+  app.listen(CONFIG.PORT, () => {
+    console.log("> listen on port", process.env.PORT);
+  });
+}
