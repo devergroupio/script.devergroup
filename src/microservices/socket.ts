@@ -1,6 +1,7 @@
 import fs from "fs";
 import moment from "moment";
 import SockJS from "sockjs-client";
+import { saveMessageLog } from "~@/core/utils/websocket";
 let singleSock = null;
 const onClose = () => {
   console.log("retry connect");
@@ -9,6 +10,7 @@ const onClose = () => {
 const OUR_USER_ID = 26076146;
 const onCustomerReply = body => {
   console.log("on customer reply");
+  saveMessageLog(body);
 };
 
 const onUserTyping = body => {

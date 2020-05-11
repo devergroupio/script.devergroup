@@ -128,3 +128,14 @@ export const UPDATE_PROJECT_STATE = gql`
     }
   }
 `;
+
+export const INSERT_CHAT_LOG = gql`
+  mutation insertChatLog(
+    $data: [chat_log_insert_input!]!
+    $on_conflict: chat_log_on_conflict!
+  ) {
+    insert_chat_log(objects: $data, on_conflict: $on_conflict) {
+      affected_rows
+    }
+  }
+`;

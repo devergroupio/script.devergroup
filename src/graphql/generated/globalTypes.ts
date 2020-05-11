@@ -8,6 +8,22 @@
 //==============================================================
 
 /**
+ * unique or primary key constraints on table "chat_log"
+ */
+export enum chat_log_constraint {
+  chat_log_pkey = "chat_log_pkey",
+}
+
+/**
+ * update columns of table "chat_log"
+ */
+export enum chat_log_update_column {
+  _data = "_data",
+  id = "id",
+  thread_id = "thread_id",
+}
+
+/**
  * unique or primary key constraints on table "jobs"
  */
 export enum jobs_constraint {
@@ -193,6 +209,21 @@ export interface String_comparison_exp {
 }
 
 /**
+ * expression to compare columns of type bigint. All fields are combined with logical 'AND'.
+ */
+export interface bigint_comparison_exp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in?: any[] | null;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin?: any[] | null;
+}
+
+/**
  * Boolean expression to filter rows from the table "bot_settings_bidsettings". All fields are combined with a logical 'AND'.
  */
 export interface bot_settings_bidsettings_bool_exp {
@@ -225,6 +256,36 @@ export interface bot_training_nottasks_insert_input {
   id?: number | null;
   phase?: string | null;
   updated_at?: any | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "chat_log". All fields are combined with a logical 'AND'.
+ */
+export interface chat_log_bool_exp {
+  _and?: (chat_log_bool_exp | null)[] | null;
+  _data?: jsonb_comparison_exp | null;
+  _not?: chat_log_bool_exp | null;
+  _or?: (chat_log_bool_exp | null)[] | null;
+  id?: Int_comparison_exp | null;
+  thread_id?: bigint_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "chat_log"
+ */
+export interface chat_log_insert_input {
+  _data?: any | null;
+  id?: number | null;
+  thread_id?: any | null;
+}
+
+/**
+ * on conflict condition type for table "chat_log"
+ */
+export interface chat_log_on_conflict {
+  constraint: chat_log_constraint;
+  update_columns: chat_log_update_column[];
+  where?: chat_log_bool_exp | null;
 }
 
 /**
