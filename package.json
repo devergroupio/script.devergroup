@@ -64,6 +64,7 @@
     "module-alias": "^2.2.2",
     "moment": "^2.24.0",
     "morgan": "^1.9.0",
+    "sockjs-client": "^1.4.0",
     "subscriptions-transport-ws": "^0.9.16",
     "winston": "^3.0.0",
     "yup": "^0.28.0"
