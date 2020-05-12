@@ -254,3 +254,12 @@ export const FETCH_LAST_PROJECTS = gql`
     }
   }
 `;
+
+export const FETCH_OS_USER_BY_ID = gql`
+  query fetchOSUserByID($user_id: bigint!) {
+    user: outsource_user_by_pk(user_id: $user_id) {
+      _data
+      user_id
+    }
+  }
+`;

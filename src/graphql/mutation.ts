@@ -161,3 +161,15 @@ export const INSERT_CHAT_ATTACHMENT = gql`
     }
   }
 `;
+
+export const UPSERT_OUTSOURCE_USER = gql`
+  mutation upsertOutsourceUser(
+    $obj: outsource_user_insert_input!
+    $conflict: outsource_user_on_conflict
+  ) {
+    insert_outsource_user_one(object: $obj, on_conflict: $conflict) {
+      _data
+      user_id
+    }
+  }
+`;

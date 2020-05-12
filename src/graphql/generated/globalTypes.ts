@@ -40,7 +40,7 @@ export enum chat_log_update_column {
   created_at = "created_at",
   id = "id",
   is_readed = "is_readed",
-  thread_id = "thread_id"
+  thread_id = "thread_id",
 }
 
 /**
@@ -75,6 +75,21 @@ export enum jobs_update_column {
   id = "id",
   isIgnored = "isIgnored",
   title = "title",
+}
+
+/**
+ * unique or primary key constraints on table "outsource_user"
+ */
+export enum outsource_user_constraint {
+  outsource_user_pkey = "outsource_user_pkey",
+}
+
+/**
+ * update columns of table "outsource_user"
+ */
+export enum outsource_user_update_column {
+  _data = "_data",
+  user_id = "user_id",
 }
 
 /**
@@ -330,6 +345,14 @@ export interface chat_attachment_on_conflict {
 }
 
 /**
+ * input type for inserting array relation for remote table "chat_log"
+ */
+export interface chat_log_arr_rel_insert_input {
+  data: chat_log_insert_input[];
+  on_conflict?: chat_log_on_conflict | null;
+}
+
+/**
  * Boolean expression to filter rows from the table "chat_log". All fields are combined with a logical 'AND'.
  */
 export interface chat_log_bool_exp {
@@ -372,6 +395,7 @@ export interface chat_thread_bool_exp {
   _or?: (chat_thread_bool_exp | null)[] | null;
   customer_id?: bigint_comparison_exp | null;
   id?: bigint_comparison_exp | null;
+  messages?: chat_log_bool_exp | null;
   project_id?: bigint_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
 }
@@ -382,6 +406,7 @@ export interface chat_thread_bool_exp {
 export interface chat_thread_insert_input {
   customer_id?: any | null;
   id?: any | null;
+  messages?: chat_log_arr_rel_insert_input | null;
   project_id?: any | null;
   updated_at?: any | null;
 }
@@ -468,6 +493,34 @@ export interface jsonb_comparison_exp {
   _lte?: any | null;
   _neq?: any | null;
   _nin?: any[] | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "outsource_user". All fields are combined with a logical 'AND'.
+ */
+export interface outsource_user_bool_exp {
+  _and?: (outsource_user_bool_exp | null)[] | null;
+  _data?: jsonb_comparison_exp | null;
+  _not?: outsource_user_bool_exp | null;
+  _or?: (outsource_user_bool_exp | null)[] | null;
+  user_id?: bigint_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "outsource_user"
+ */
+export interface outsource_user_insert_input {
+  _data?: any | null;
+  user_id?: any | null;
+}
+
+/**
+ * on conflict condition type for table "outsource_user"
+ */
+export interface outsource_user_on_conflict {
+  constraint: outsource_user_constraint;
+  update_columns: outsource_user_update_column[];
+  where?: outsource_user_bool_exp | null;
 }
 
 /**

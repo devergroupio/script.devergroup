@@ -5,6 +5,7 @@ import hsrClient from "~@/core/modules/hasura.module";
 import { CONFIG } from "~@/core/utils";
 import { saveMessageLog } from "~@/core/utils/websocket";
 
+import { syncOSUserIfNotExisted } from "~@/core/utils/hasura";
 import {
   chat_attachment_constraint,
   chat_attachment_update_column,
@@ -43,8 +44,13 @@ const onCustomerReply = body => {
         }
       }
     });
+
   console.log("on customer reply");
-  Promise.all([saveThread(), saveMessageLog(body)]);
+  Promise.all([
+    saveThread(),
+    syncOSUserIfNotExisted(_.get(body, "data.thread.thread.owner", null)),
+    saveMessageLog(body)
+  ]);
 };
 
 const onUserTyping = body => {

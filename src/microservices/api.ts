@@ -13,6 +13,7 @@ import * as yup from "yup";
 import gqlClient from "~@/core/modules/hasura.module";
 import httpClient from "~@/core/modules/http.module";
 import { CONFIG } from "~@/core/utils";
+import { fetchAndSyncUser } from "~@/core/utils/freelancer";
 const tempUpload = multer({
   storage: multer.memoryStorage()
 });
@@ -130,6 +131,22 @@ app.get("/attachment/:message_id/:file", async (req, res) => {
     return res.end(data);
   } catch (err) {
     res.status(500).send({
+      isError: true,
+      message: err.toString()
+    });
+  }
+});
+
+app.get("/outsource-user/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await fetchAndSyncUser(id);
+    return res.json({
+      isError: false,
+      message: user
+    });
+  } catch (err) {
+    return res.status(500).json({
       isError: true,
       message: err.toString()
     });
