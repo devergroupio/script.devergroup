@@ -3,13 +3,11 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { chat_thread_insert_input, chat_thread_on_conflict } from "./globalTypes";
-
 // ====================================================
-// GraphQL mutation operation: upsertThread
+// GraphQL query operation: fetchThreadByID
 // ====================================================
 
-export interface upsertThread_insert_chat_thread_one_user {
+export interface fetchThreadByID_chat_thread_by_pk_user {
   __typename: "outsource_user";
   user_id: any;
   country: any | null;
@@ -21,7 +19,7 @@ export interface upsertThread_insert_chat_thread_one_user {
   identity_verified: any | null;
 }
 
-export interface upsertThread_insert_chat_thread_one_messages {
+export interface fetchThreadByID_chat_thread_by_pk_messages {
   __typename: "chat_log";
   message_id: any;
   message: any;
@@ -33,7 +31,7 @@ export interface upsertThread_insert_chat_thread_one_messages {
   id: number;
 }
 
-export interface upsertThread_insert_chat_thread_one {
+export interface fetchThreadByID_chat_thread_by_pk {
   __typename: "chat_thread";
   customer_id: any | null;
   id: any;
@@ -42,21 +40,20 @@ export interface upsertThread_insert_chat_thread_one {
   /**
    * An object relationship
    */
-  user: upsertThread_insert_chat_thread_one_user | null;
+  user: fetchThreadByID_chat_thread_by_pk_user | null;
   /**
    * An array relationship
    */
-  messages: upsertThread_insert_chat_thread_one_messages[];
+  messages: fetchThreadByID_chat_thread_by_pk_messages[];
 }
 
-export interface upsertThread {
+export interface fetchThreadByID {
   /**
-   * insert a single row into the table: "chat_thread"
+   * fetch data from the table: "chat_thread" using primary key columns
    */
-  insert_chat_thread_one: upsertThread_insert_chat_thread_one | null;
+  chat_thread_by_pk: fetchThreadByID_chat_thread_by_pk | null;
 }
 
-export interface upsertThreadVariables {
-  object: chat_thread_insert_input;
-  on_conflict?: chat_thread_on_conflict | null;
+export interface fetchThreadByIDVariables {
+  thread_id: any;
 }

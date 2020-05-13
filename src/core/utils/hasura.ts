@@ -44,11 +44,11 @@ export const getOSUByID = async id => {
 
 export const syncOSUserIfNotExisted = async id => {
   if (!id) {
-    return;
+    return null;
   }
   const user = await getOSUByID(id);
   if (user) {
-    return;
+    return user;
   } else {
     return fetchAndSyncUser(id);
   }

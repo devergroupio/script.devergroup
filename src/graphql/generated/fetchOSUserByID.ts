@@ -9,8 +9,14 @@
 
 export interface fetchOSUserByID_user {
   __typename: "outsource_user";
-  _data: any | null;
   user_id: any;
+  country: any | null;
+  timezone: any | null;
+  username: any | null;
+  public_name: any | null;
+  email_verified: any | null;
+  payment_verified: any | null;
+  identity_verified: any | null;
 }
 
 export interface fetchOSUserByID {

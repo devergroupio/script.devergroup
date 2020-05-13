@@ -13,16 +13,21 @@ import * as yup from "yup";
 import gqlClient from "~@/core/modules/hasura.module";
 import httpClient from "~@/core/modules/http.module";
 import { CONFIG } from "~@/core/utils";
-import { fetchAndSyncUser } from "~@/core/utils/freelancer";
+import {
+  fetchThreadByID,
+  fetchThreadByIDVariables
+} from "~@/graphql/generated/fetchThreadByID";
+import { FETCH_THREAD_BY_ID, FETCH_USERS_BY_EMAILS } from "~@/graphql/query";
 const tempUpload = multer({
   storage: multer.memoryStorage()
 });
 
+import { syncOSUserIfNotExisted } from "~@/core/utils/hasura";
 import {
   fetchUsersByEmail,
   fetchUsersByEmailVariables
 } from "~@/graphql/generated/fetchUsersByEmail";
-import { FETCH_USERS_BY_EMAILS } from "~@/graphql/query";
+import { insertThread } from "./socket";
 const app = Express.Router();
 
 app.use(
@@ -140,7 +145,7 @@ app.get("/attachment/:message_id/:file", async (req, res) => {
 app.get("/outsource-user/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const user = await fetchAndSyncUser(id);
+    const user = await syncOSUserIfNotExisted(id);
     return res.json({
       isError: false,
       message: user
@@ -152,6 +157,50 @@ app.get("/outsource-user/:id", async (req, res) => {
     });
   }
 });
+
+app.get("/chat_thread/:id", async (req, res) => {
+  const threadId = req.params.id;
+  const {
+    data: { chat_thread_by_pk }
+  } = await gqlClient.query<fetchThreadByID, fetchThreadByIDVariables>({
+    query: FETCH_THREAD_BY_ID,
+    variables: {
+      thread_id: threadId
+    }
+  });
+  if (chat_thread_by_pk) {
+    return res.json({
+      isError: false,
+      message: chat_thread_by_pk
+    });
+  } else {
+    const { data } = await httpClient.axios.get(
+      `https://www.freelancer.com/api/messages/0.1/threads/${threadId}`
+    );
+    if (data.status === "success") {
+      const threads = data.result.threads;
+      if (threads.length > 0) {
+        const thread = threads[0];
+        await syncOSUserIfNotExisted(thread.thread.owner);
+        const {
+          data: { insert_chat_thread_one: cachedThread }
+        } = await insertThread(thread);
+        return res.json({
+          isError: false,
+          message: cachedThread
+        });
+      } else {
+        return res.status(400).json({
+          isError: true,
+          message: "Thread ID not existed"
+        });
+      }
+    } else {
+      throw new Error(data.result);
+    }
+  }
+});
+
 app.post(
   "/message-attachment/:thread_id",
   tempUpload.single("file"),
@@ -197,6 +246,7 @@ app.post(
     }
   }
 );
+
 app.post("/message/:thread_id", async (req, res) => {
   const threadID = req.params.thread_id;
   const message = req.body.message;

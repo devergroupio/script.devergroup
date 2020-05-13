@@ -398,6 +398,7 @@ export interface chat_thread_bool_exp {
   messages?: chat_log_bool_exp | null;
   project_id?: bigint_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
+  user?: outsource_user_bool_exp | null;
 }
 
 /**
@@ -409,6 +410,7 @@ export interface chat_thread_insert_input {
   messages?: chat_log_arr_rel_insert_input | null;
   project_id?: any | null;
   updated_at?: any | null;
+  user?: outsource_user_obj_rel_insert_input | null;
 }
 
 /**
@@ -512,6 +514,14 @@ export interface outsource_user_bool_exp {
 export interface outsource_user_insert_input {
   _data?: any | null;
   user_id?: any | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "outsource_user"
+ */
+export interface outsource_user_obj_rel_insert_input {
+  data: outsource_user_insert_input;
+  on_conflict?: outsource_user_on_conflict | null;
 }
 
 /**

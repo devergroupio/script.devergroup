@@ -6,7 +6,7 @@ import cronRunning from "~@/microservices/cron.running";
 
 errorHandling.listen();
 
-cronRunning();
+// cronRunning();
 
 import express from "express";
 const app = express();

@@ -27,27 +27,26 @@ const onClose = () => {
   listen();
 };
 // const OUR_USER_ID = 26076146;
-const onCustomerReply = body => {
-  const saveThread = async () =>
-    hsrClient.mutate<upsertThread, upsertThreadVariables>({
-      mutation: INSERT_THREAD,
-      variables: {
-        object: {
-          id: body.data.thread.id,
-          project_id: _.get(body, "data.thread.thread.context.id", null),
-          customer_id: _.get(body, "data.thread.thread.owner", null),
-          updated_at: moment.utc()
-        },
-        on_conflict: {
-          update_columns: [chat_thread_update_column.updated_at],
-          constraint: chat_thread_constraint.chat_thread_pkey
-        }
+export const insertThread = async thread =>
+  hsrClient.mutate<upsertThread, upsertThreadVariables>({
+    mutation: INSERT_THREAD,
+    variables: {
+      object: {
+        id: thread.id,
+        project_id: _.get(thread, "thread.context.id", null),
+        customer_id: _.get(thread, "thread.owner", null),
+        updated_at: moment.utc()
+      },
+      on_conflict: {
+        update_columns: [chat_thread_update_column.updated_at],
+        constraint: chat_thread_constraint.chat_thread_pkey
       }
-    });
-
+    }
+  });
+const onCustomerReply = body => {
   console.log("on customer reply");
   Promise.all([
-    saveThread(),
+    insertThread(body.data.thread),
     syncOSUserIfNotExisted(_.get(body, "data.thread.thread.owner", null)),
     saveMessageLog(body)
   ]);

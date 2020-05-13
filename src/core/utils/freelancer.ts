@@ -16,8 +16,7 @@ export const fetchAndSyncUser = async id => {
     `https://www.freelancer.com/api/users/0.1/users/${id}/`
   );
   if (data.status === "success") {
-    upsertOSUser(id, data.result);
-    return data.result;
+    return upsertOSUser(id, data.result);
   } else {
     throw new Error(data.result);
   }
