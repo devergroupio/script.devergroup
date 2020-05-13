@@ -6,7 +6,7 @@ import cronRunning from "~@/microservices/cron.running";
 
 errorHandling.listen();
 
-// cronRunning();
+cronRunning();
 
 import express from "express";
 const app = express();
@@ -32,6 +32,7 @@ if (CONFIG.IS_ENABLE_API) {
     }),
     api
   );
+
   app.use(
     "/hasura",
     createProxyMiddleware({
