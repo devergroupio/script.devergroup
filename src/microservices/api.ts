@@ -27,6 +27,12 @@ import {
   fetchUsersByEmail,
   fetchUsersByEmailVariables
 } from "~@/graphql/generated/fetchUsersByEmail";
+import { users_constraint } from "~@/graphql/generated/globalTypes";
+import {
+  insertUsers,
+  insertUsersVariables
+} from "~@/graphql/generated/insertUsers";
+import { INSERT_USER } from "~@/graphql/mutation";
 import { insertThread } from "./socket";
 const app = Express.Router();
 
@@ -65,7 +71,7 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
       validationSchema.validateSync(req.body);
     } catch (err) {
       return res.status(401).json({
-        error: true,
+        isError: true,
         message: err.toString()
       });
     }
@@ -92,7 +98,7 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
           }
         });
         return res.json({
-          error: false,
+          isError: false,
           message: JSON.stringify({
             token: jwtToken,
             email: user.email,
@@ -103,25 +109,68 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
         });
       } else {
         return res.status(401).json({
-          error: true,
+          isError: true,
           message: `user or password is incorrect`
         });
       }
     } else {
       console.log("incorrect");
       return res.status(401).json({
-        error: true,
+        isError: true,
         message: `user or password is incorrect`
       });
     }
   } catch (err) {
     return res.status(500).json({
-      error: true,
+      isError: true,
       message: err.toString()
     });
   }
 };
 app.post("/authorize", apiAuthorizeHanlder);
+
+app.post("/user/create", async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const firstName = req.body.first_name;
+  const lastName = req.body.last_name;
+  const hashedPassword = bcrypt.hashSync(password, 12);
+
+  const {
+    data: { users }
+  } = await gqlClient.query<fetchUsersByEmail, fetchUsersByEmailVariables>({
+    query: FETCH_USERS_BY_EMAILS,
+    variables: {
+      emails: [email]
+    }
+  });
+  if (users.length > 0) {
+    return res.status(400).json({
+      isError: true,
+      message: "email alread existed"
+    });
+  }
+  await gqlClient.mutate<insertUsers, insertUsersVariables>({
+    mutation: INSERT_USER,
+    variables: {
+      object: {
+        email,
+        password: hashedPassword,
+        first_name: firstName,
+        last_name: lastName,
+        role: "USER"
+      },
+      on_confict: {
+        constraint: users_constraint.users_pkey,
+        update_columns: []
+      }
+    }
+  });
+  res.json({
+    isError: false,
+    message: "created"
+  });
+});
 
 app.get("/attachment/:message_id/:file", async (req, res) => {
   const messageId = req.params.message_id;

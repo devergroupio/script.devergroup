@@ -195,6 +195,26 @@ export enum scripts_update_column {
 }
 
 /**
+ * unique or primary key constraints on table "users"
+ */
+export enum users_constraint {
+  users_pkey = "users_pkey",
+}
+
+/**
+ * update columns of table "users"
+ */
+export enum users_update_column {
+  created_at = "created_at",
+  email = "email",
+  first_name = "first_name",
+  last_name = "last_name",
+  password = "password",
+  role = "role",
+  updated_at = "updated_at",
+}
+
+/**
  * expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
  */
 export interface Boolean_comparison_exp {
@@ -810,6 +830,44 @@ export interface timestamptz_comparison_exp {
   _lte?: any | null;
   _neq?: any | null;
   _nin?: any[] | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+ */
+export interface users_bool_exp {
+  _and?: (users_bool_exp | null)[] | null;
+  _not?: users_bool_exp | null;
+  _or?: (users_bool_exp | null)[] | null;
+  created_at?: timestamptz_comparison_exp | null;
+  email?: String_comparison_exp | null;
+  first_name?: String_comparison_exp | null;
+  last_name?: String_comparison_exp | null;
+  password?: String_comparison_exp | null;
+  role?: String_comparison_exp | null;
+  updated_at?: timestamptz_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "users"
+ */
+export interface users_insert_input {
+  created_at?: any | null;
+  email?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  password?: string | null;
+  role?: string | null;
+  updated_at?: any | null;
+}
+
+/**
+ * on conflict condition type for table "users"
+ */
+export interface users_on_conflict {
+  constraint: users_constraint;
+  update_columns: users_update_column[];
+  where?: users_bool_exp | null;
 }
 
 //==============================================================

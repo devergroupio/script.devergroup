@@ -202,3 +202,14 @@ export const UPSERT_OUTSOURCE_USER = gql`
     }
   }
 `;
+
+export const INSERT_USER = gql`
+  mutation insertUsers(
+    $object: users_insert_input!
+    $on_confict: users_on_conflict
+  ) {
+    insert_users_one(object: $object, on_conflict: $on_confict) {
+      email
+    }
+  }
+`;
