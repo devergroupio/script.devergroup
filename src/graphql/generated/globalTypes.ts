@@ -39,6 +39,7 @@ export enum chat_log_update_column {
   _data = "_data",
   created_at = "created_at",
   id = "id",
+  is_notified = "is_notified",
   is_readed = "is_readed",
   thread_id = "thread_id",
 }
@@ -195,6 +196,23 @@ export enum scripts_update_column {
 }
 
 /**
+ * unique or primary key constraints on table "user_skill"
+ */
+export enum user_skill_constraint {
+  user_skill_pkey = "user_skill_pkey",
+  user_skill_user_id_skill_id_key = "user_skill_user_id_skill_id_key",
+}
+
+/**
+ * update columns of table "user_skill"
+ */
+export enum user_skill_update_column {
+  id = "id",
+  skill_id = "skill_id",
+  user_id = "user_id",
+}
+
+/**
  * unique or primary key constraints on table "users"
  */
 export enum users_constraint {
@@ -211,6 +229,7 @@ export enum users_update_column {
   last_name = "last_name",
   password = "password",
   role = "role",
+  status = "status",
   updated_at = "updated_at",
 }
 
@@ -382,6 +401,7 @@ export interface chat_log_bool_exp {
   _or?: (chat_log_bool_exp | null)[] | null;
   created_at?: timestamptz_comparison_exp | null;
   id?: Int_comparison_exp | null;
+  is_notified?: Boolean_comparison_exp | null;
   is_readed?: Boolean_comparison_exp | null;
   thread_id?: bigint_comparison_exp | null;
 }
@@ -393,6 +413,7 @@ export interface chat_log_insert_input {
   _data?: any | null;
   created_at?: any | null;
   id?: number | null;
+  is_notified?: boolean | null;
   is_readed?: boolean | null;
   thread_id?: any | null;
 }
@@ -416,6 +437,7 @@ export interface chat_thread_bool_exp {
   customer_id?: bigint_comparison_exp | null;
   id?: bigint_comparison_exp | null;
   messages?: chat_log_bool_exp | null;
+  project?: projects_bool_exp | null;
   project_id?: bigint_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
   user?: outsource_user_bool_exp | null;
@@ -428,6 +450,7 @@ export interface chat_thread_insert_input {
   customer_id?: any | null;
   id?: any | null;
   messages?: chat_log_arr_rel_insert_input | null;
+  project?: projects_obj_rel_insert_input | null;
   project_id?: any | null;
   updated_at?: any | null;
   user?: outsource_user_obj_rel_insert_input | null;
@@ -468,6 +491,7 @@ export interface jobs_bool_exp {
   isIgnored?: Boolean_comparison_exp | null;
   projectsjobs?: projectsjobs_bool_exp | null;
   title?: String_comparison_exp | null;
+  users?: user_skill_bool_exp | null;
 }
 
 /**
@@ -478,6 +502,7 @@ export interface jobs_insert_input {
   isIgnored?: boolean | null;
   projectsjobs?: projectsjobs_arr_rel_insert_input | null;
   title?: string | null;
+  users?: user_skill_arr_rel_insert_input | null;
 }
 
 /**
@@ -833,6 +858,46 @@ export interface timestamptz_comparison_exp {
 }
 
 /**
+ * input type for inserting array relation for remote table "user_skill"
+ */
+export interface user_skill_arr_rel_insert_input {
+  data: user_skill_insert_input[];
+  on_conflict?: user_skill_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "user_skill". All fields are combined with a logical 'AND'.
+ */
+export interface user_skill_bool_exp {
+  _and?: (user_skill_bool_exp | null)[] | null;
+  _not?: user_skill_bool_exp | null;
+  _or?: (user_skill_bool_exp | null)[] | null;
+  id?: Int_comparison_exp | null;
+  skill_id?: Int_comparison_exp | null;
+  user?: users_bool_exp | null;
+  user_id?: String_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "user_skill"
+ */
+export interface user_skill_insert_input {
+  id?: number | null;
+  skill_id?: number | null;
+  user?: users_obj_rel_insert_input | null;
+  user_id?: string | null;
+}
+
+/**
+ * on conflict condition type for table "user_skill"
+ */
+export interface user_skill_on_conflict {
+  constraint: user_skill_constraint;
+  update_columns: user_skill_update_column[];
+  where?: user_skill_bool_exp | null;
+}
+
+/**
  * Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
  */
 export interface users_bool_exp {
@@ -845,6 +910,7 @@ export interface users_bool_exp {
   last_name?: String_comparison_exp | null;
   password?: String_comparison_exp | null;
   role?: String_comparison_exp | null;
+  status?: String_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
 }
 
@@ -858,7 +924,16 @@ export interface users_insert_input {
   last_name?: string | null;
   password?: string | null;
   role?: string | null;
+  status?: string | null;
   updated_at?: any | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "users"
+ */
+export interface users_obj_rel_insert_input {
+  data: users_insert_input;
+  on_conflict?: users_on_conflict | null;
 }
 
 /**

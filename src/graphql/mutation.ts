@@ -213,3 +213,14 @@ export const INSERT_USER = gql`
     }
   }
 `;
+
+export const MARK_THREAD_AS_NOTIFIED = gql`
+  mutation markThreadAsNotified($thread_id: bigint!) {
+    update_chat_log(
+      where: { thread_id: { _eq: $thread_id } }
+      _set: { is_notified: true }
+    ) {
+      affected_rows
+    }
+  }
+`;

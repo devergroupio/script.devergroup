@@ -300,3 +300,29 @@ export const FETCH_THREAD_BY_ID = gql`
     }
   }
 `;
+
+export const GET_UNSUPPORTED_MESSAGE = gql`
+  query getUnsupportedCustomer {
+    unsupported_customer(where: { thread: { id: { _is_null: false } } }) {
+      last_message: _data(path: "data.message")
+      thread {
+        id
+        project {
+          id
+          skills: projectsjobs {
+            skill: job {
+              users(where: { user: { status: { _nin: ["offline"] } } }) {
+                user {
+                  status
+                  email
+                }
+              }
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+`;
