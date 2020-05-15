@@ -43,6 +43,6 @@ export const sendChatNotification = async (opts: {
   return sendMail({
     to: opts.to,
     html: finalHtml,
-    subject: "Customer is messaging to yu"
+    subject: "Customer is messaging you on our platform!"
   });
 };
