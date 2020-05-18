@@ -75,8 +75,8 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
         message: err.toString()
       });
     }
-    const { email, password } = req.body;
-
+    let { email, password } = req.body;
+    email = email.toLowerCase();
     const {
       data: { users }
     } = await gqlClient.query<fetchUsersByEmail, fetchUsersByEmailVariables>({
@@ -130,12 +130,12 @@ export const apiAuthorizeHanlder = async (req: Request, res: Response) => {
 app.post("/authorize", apiAuthorizeHanlder);
 
 app.post("/user/create", async (req, res) => {
-  const email = req.body.email;
+  let email = req.body.email;
   const password = req.body.password;
   const firstName = req.body.first_name;
   const lastName = req.body.last_name;
   const hashedPassword = bcrypt.hashSync(password, 12);
-
+  email = email.toLowerCase();
   const {
     data: { users }
   } = await gqlClient.query<fetchUsersByEmail, fetchUsersByEmailVariables>({
