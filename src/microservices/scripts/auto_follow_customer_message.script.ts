@@ -3,6 +3,7 @@ import _ from "lodash";
 import errorHandling from "~@/core/modules/error.module";
 
 import hsrClient from "~@/core/modules/hasura.module";
+import logger from "~@/core/modules/log.module";
 import { sendChatNotification } from "~@/core/utils/send_email";
 import { getUnsupportedCustomer } from "~@/graphql/generated/getUnsupportedCustomer";
 import {
