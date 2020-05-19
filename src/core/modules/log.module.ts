@@ -28,7 +28,6 @@
 //   logger.put(this);
 // };
 // exports.logger = logger;
-import * as Sentry from "@sentry/node";
 import { SentryTransport, SentryTransportOpts } from "sentry-transport-winston";
 
 const opts: SentryTransportOpts = {
