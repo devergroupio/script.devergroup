@@ -67,11 +67,11 @@ const getTransports = () => {
   const transports = [];
   if (process.env.MODE === "production") {
     transports.push(
-      new winston.transports.File({
-        level: "error",
-        filename: "logs/errors.log",
-        format: productionFormat
-      }),
+      // new winston.transports.File({
+      //   level: "error",
+      //   filename: "logs/errors.log",
+      //   format: productionFormat
+      // }),
       // new winston.transports.File({
       //     filename: "logs/all.log",
       //     format: productionFormat
@@ -80,14 +80,11 @@ const getTransports = () => {
         Sentry
       }),
       new winston.transports.Console({
-        format: consoleLogFormat
+        format: productionFormat
       })
     );
   } else {
     transports.push(
-      new winston.transports.Console({
-        format: consoleLogFormat
-      }),
       new winston.transports.Console({
         format: consoleLogFormat
       })
