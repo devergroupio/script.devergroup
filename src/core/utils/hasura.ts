@@ -12,8 +12,15 @@ import {
   upsertOutsourceUserVariables
 } from "~@/graphql/generated/upsertOutsourceUser";
 import { UPSERT_OUTSOURCE_USER } from "~@/graphql/mutation";
-import { FETCH_OS_USER_BY_ID } from "~@/graphql/query";
+import { FETCH_OS_USER_BY_ID /* FETCH_USER_SKILLS */ } from "~@/graphql/query";
 import { fetchAndSyncUser } from "./freelancer";
+
+// import {
+//   fetchTotalUserSkills,
+//   fetchTotalUserSkills_users,
+//   fetchTotalUserSkills_users_skills,
+//   fetchTotalUserSkills_users_skills_skill
+// } from "~@/graphql/generated/fetchTotalUserSkills";
 export const upsertOSUser = (userId, data) => {
   return hsrClient.mutate<upsertOutsourceUser, upsertOutsourceUserVariables>({
     mutation: UPSERT_OUTSOURCE_USER,
@@ -53,3 +60,22 @@ export const syncOSUserIfNotExisted = async id => {
     return fetchAndSyncUser(id);
   }
 };
+
+// export const fetchAvailableSkills = async (): Promise<
+//   fetchTotalUserSkills_users_skills_skill[]
+// > => {
+//   const {
+//     data: { users }
+//   } = await hsrClient.query<fetchTotalUserSkills>({
+//     query: FETCH_USER_SKILLS
+//   });
+//   if (users.length < 0) {
+//     return [];
+//   } else {
+//     const skills = users.reduce((prev, now) => {
+//       now.skills.map(skill => prev.push(skill.skill));
+//       return prev;
+//     }, []);
+//     return skills;
+//   }
+// };

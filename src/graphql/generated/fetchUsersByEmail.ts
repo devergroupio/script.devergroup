@@ -13,7 +13,7 @@ export interface fetchUsersByEmail_users {
   first_name: string;
   password: string;
   last_name: string;
-  role: string;
+  role: string | null;
 }
 
 export interface fetchUsersByEmail {

@@ -79,6 +79,14 @@ export const FETCH_FILTER_SETTINGS = gql`
       id
       title
     }
+    onlineSkills: users(where: { status: { _eq: "online" } }) {
+      skills {
+        skill {
+          title
+          id
+        }
+      }
+    }
   }
 `;
 
@@ -321,6 +329,20 @@ export const GET_UNSUPPORTED_MESSAGE = gql`
               title
             }
           }
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_USER_SKILLS = gql`
+  query fetchTotalUserSkills {
+    users(where: { status: { _eq: "online" } }) {
+      email
+      skills {
+        skill {
+          title
+          id
         }
       }
     }
