@@ -1,6 +1,7 @@
 FROM node:12.16.3
 RUN ["mkdir", "/home/application"]
 COPY dist /home/application/dist
+COPY src/core/utils/templates /home/application/dist/core/utils/templates
 COPY package.json /home/application/package.json
 COPY .env.example /home/application/.env.example
 COPY .environments  /home/application/.environments
