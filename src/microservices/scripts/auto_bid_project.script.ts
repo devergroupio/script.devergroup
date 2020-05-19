@@ -6,21 +6,35 @@ import errorHandling from "~@/core/modules/error.module";
 errorHandling.listen();
 import { bidProject } from "~@/core/modules/freelancer";
 import logger from "~@/core/modules/log.module";
+import { fetchBidSettings as IfetchBidSettings } from "~@/graphql/generated/fetchBidSettings";
 import {
   fetchOnGoingBidInfo,
   fetchOnGoingBidInfoVariables
 } from "~@/graphql/generated/fetchOnGoingBidInfo";
-import { FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
+import { FETCH_BID_SETTINGS, FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
 import { fetchScriptInfo } from "../cron.running";
 
+const fetchBidSettings = async () => {
+  const {
+    data: { bot_settings_bidsettings }
+  } = await gqlClient.query<IfetchBidSettings>({
+    query: FETCH_BID_SETTINGS
+  });
+  if (bot_settings_bidsettings.length > 0) {
+    return bot_settings_bidsettings[0];
+  }
+  throw new Error("Bid setting haven't be setted");
+};
 const fetchRequiredData = async () => {
+  const bidSetting = await fetchBidSettings();
+
   const {
     data: { projects, bidSettings }
   } = await gqlClient.query<fetchOnGoingBidInfo, fetchOnGoingBidInfoVariables>({
     query: FETCH_ONGOING_BIDINFO,
     variables: {
       timeMax: moment(),
-      timeMin: moment().subtract(5, "minutes") // @TODO: Move this timer to bidSetting
+      timeMin: moment().subtract(bidSetting.timer, "seconds") // @TODO: Move this timer to bidSetting
     }
   });
   if (bidSettings.length <= 0) {
