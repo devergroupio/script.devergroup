@@ -7,21 +7,38 @@ export default async (projects: IFLProject[], settings: IprojectFilter) => {
   const passedProjects = [];
   await Promise.all(
     projects.map(async project => {
-      const isPassed = await isPassIgnoredSkills(
+      const isPassed = isPassIgnoredSkills(
         settings.ignoredSkills,
         project.jobs
       );
-      if (isPassed) {
+      const isHaveSomeone = isHaveSomeoneCanHandleIt(
+        settings.onlineSkills,
+        project.jobs
+      );
+      if (isPassed && isHaveSomeone) {
         passedProjects.push(project);
       } else {
-        await onUnQuanlity(project, "skills");
+        let problem = "skills";
+        if (isPassed && !isHaveSomeone) {
+          problem = "DEVELOPER_OFFLINE";
+        }
+        await onUnQuanlity(project, problem);
       }
     })
   );
   return passedProjects;
 };
 
-const isPassIgnoredSkills = async (
+const isHaveSomeoneCanHandleIt = (
+  onlineSkills: number[],
+  projectSkills: string[]
+) => {
+  const formattedSkills = projectSkills.map(skill => Number(skill));
+  const matchedIgnoredSkills = _.intersection(onlineSkills, formattedSkills);
+  return matchedIgnoredSkills.length > 0;
+};
+
+const isPassIgnoredSkills = (
   ignoredSkills: IprojectFilter["ignoredSkills"],
   projectSkills: string[]
 ) => {

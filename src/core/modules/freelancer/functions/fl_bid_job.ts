@@ -40,6 +40,7 @@ const fetchTraining = async () => {
   });
   return data;
 };
+
 export const getSuggestion = async (project: ILocalProject) => {
   const [settings, training] = await Promise.all([
     fetchBidSettings(),
@@ -56,6 +57,7 @@ export const getSuggestion = async (project: ILocalProject) => {
     description
   };
 };
+
 export default async (project: ILocalProject) => {
   const [settings, training] = await Promise.all([
     fetchBidSettings(),

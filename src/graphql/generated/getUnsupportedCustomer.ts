@@ -10,6 +10,7 @@
 export interface getUnsupportedCustomer_unsupported_customer_thread_project_skills_skill_users_user {
   __typename: "users";
   status: string;
+  email: string;
 }
 
 export interface getUnsupportedCustomer_unsupported_customer_thread_project_skills_skill_users {

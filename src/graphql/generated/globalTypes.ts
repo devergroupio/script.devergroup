@@ -226,6 +226,7 @@ export enum users_update_column {
   created_at = "created_at",
   email = "email",
   first_name = "first_name",
+  isActive = "isActive",
   last_name = "last_name",
   password = "password",
   role = "role",
@@ -403,6 +404,7 @@ export interface chat_log_bool_exp {
   id?: Int_comparison_exp | null;
   is_notified?: Boolean_comparison_exp | null;
   is_readed?: Boolean_comparison_exp | null;
+  thread?: chat_thread_bool_exp | null;
   thread_id?: bigint_comparison_exp | null;
 }
 
@@ -415,6 +417,7 @@ export interface chat_log_insert_input {
   id?: number | null;
   is_notified?: boolean | null;
   is_readed?: boolean | null;
+  thread?: chat_thread_obj_rel_insert_input | null;
   thread_id?: any | null;
 }
 
@@ -454,6 +457,14 @@ export interface chat_thread_insert_input {
   project_id?: any | null;
   updated_at?: any | null;
   user?: outsource_user_obj_rel_insert_input | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "chat_thread"
+ */
+export interface chat_thread_obj_rel_insert_input {
+  data: chat_thread_insert_input;
+  on_conflict?: chat_thread_on_conflict | null;
 }
 
 /**
@@ -873,6 +884,7 @@ export interface user_skill_bool_exp {
   _not?: user_skill_bool_exp | null;
   _or?: (user_skill_bool_exp | null)[] | null;
   id?: Int_comparison_exp | null;
+  skill?: jobs_bool_exp | null;
   skill_id?: Int_comparison_exp | null;
   user?: users_bool_exp | null;
   user_id?: String_comparison_exp | null;
@@ -883,6 +895,7 @@ export interface user_skill_bool_exp {
  */
 export interface user_skill_insert_input {
   id?: number | null;
+  skill?: jobs_obj_rel_insert_input | null;
   skill_id?: number | null;
   user?: users_obj_rel_insert_input | null;
   user_id?: string | null;
@@ -907,9 +920,11 @@ export interface users_bool_exp {
   created_at?: timestamptz_comparison_exp | null;
   email?: String_comparison_exp | null;
   first_name?: String_comparison_exp | null;
+  isActive?: Boolean_comparison_exp | null;
   last_name?: String_comparison_exp | null;
   password?: String_comparison_exp | null;
   role?: String_comparison_exp | null;
+  skills?: user_skill_bool_exp | null;
   status?: String_comparison_exp | null;
   updated_at?: timestamptz_comparison_exp | null;
 }
@@ -921,9 +936,11 @@ export interface users_insert_input {
   created_at?: any | null;
   email?: string | null;
   first_name?: string | null;
+  isActive?: boolean | null;
   last_name?: string | null;
   password?: string | null;
   role?: string | null;
+  skills?: user_skill_arr_rel_insert_input | null;
   status?: string | null;
   updated_at?: any | null;
 }

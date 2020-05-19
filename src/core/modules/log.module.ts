@@ -28,63 +28,74 @@
 //   logger.put(this);
 // };
 // exports.logger = logger;
-
+import * as Sentry from "@sentry/node";
+import SentryTransport from "@synapsestudios/winston-sentry";
+Sentry.init({
+  dsn:
+    "https://6f90674b239842bea1b4d9d5d78985bc@o394239.ingest.sentry.io/5245806"
+});
 import moment from "moment";
 import winston from "winston";
 const colorizer = winston.format.colorize();
 const consoleLogFormat = winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.simple(),
-    winston.format.splat(),
-    winston.format.printf(msg =>
-        colorizer.colorize(
-            msg.level,
-            `${moment
-                .utc(msg.timestamp)
-                .utcOffset(7)
-                .format("DD/MM/YYYY hh:mm:ss")} - ${msg.level}: ${msg.message}`
-        )
+  winston.format.timestamp(),
+  winston.format.simple(),
+  winston.format.splat(),
+  winston.format.printf(msg =>
+    colorizer.colorize(
+      msg.level,
+      `${moment
+        .utc(msg.timestamp)
+        .utcOffset(7)
+        .format("DD/MM/YYYY hh:mm:ss")} - ${msg.level}: ${msg.message}`
     )
+  )
 );
 const productionFormat = winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.simple(),
-    winston.format.splat(),
-    winston.format.printf(
-        msg =>
-            `${moment
-                .utc(msg.timestamp)
-                .utcOffset(7)
-                .format("DD/MM/YYYY hh:mm:ss")} - ${msg.level}: ${msg.message}`
-    )
+  winston.format.timestamp(),
+  winston.format.simple(),
+  winston.format.splat(),
+  winston.format.printf(
+    msg =>
+      `${moment
+        .utc(msg.timestamp)
+        .utcOffset(7)
+        .format("DD/MM/YYYY hh:mm:ss")} - ${msg.level}: ${msg.message}`
+  )
 );
 const getTransports = () => {
-    const transports = [];
-    if (process.env.MODE === "production") {
-        transports.push(
-            new winston.transports.File({
-                level: "error",
-                filename: "logs/errors.log",
-                format: productionFormat
-            }),
-            // new winston.transports.File({
-            //     filename: "logs/all.log",
-            //     format: productionFormat
-            // }),
-            new winston.transports.Console({
-                format: consoleLogFormat
-            })
-        );
-    } else {
-        transports.push(
-            new winston.transports.Console({
-                format: consoleLogFormat
-            })
-        );
-    }
-    return transports;
+  const transports = [];
+  if (process.env.MODE === "production") {
+    transports.push(
+      new winston.transports.File({
+        level: "error",
+        filename: "logs/errors.log",
+        format: productionFormat
+      }),
+      // new winston.transports.File({
+      //     filename: "logs/all.log",
+      //     format: productionFormat
+      // }),
+      new SentryTransport({
+        Sentry
+      }),
+      new winston.transports.Console({
+        format: consoleLogFormat
+      })
+    );
+  } else {
+    transports.push(
+      new winston.transports.Console({
+        format: consoleLogFormat
+      }),
+      new winston.transports.Console({
+        format: consoleLogFormat
+      })
+    );
+  }
+  return transports;
 };
 
 export default winston.createLogger({
-    transports: getTransports()
+  transports: getTransports()
 });

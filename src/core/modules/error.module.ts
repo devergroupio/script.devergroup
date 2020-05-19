@@ -1,6 +1,9 @@
 import errorParser from "error-stack-parser";
 
 import logger from "./log.module";
+// or using CommonJS
+// const Sentry = require('@sentry/node');
+
 const parserError = (err: Error) => {
   const errors = errorParser.parse(err);
   const firstStack = errors[0];
