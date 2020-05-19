@@ -11,8 +11,8 @@ export const sendMail = async (opts: {
   html: string;
 }) => {
   const send = sendInstance({
-    user: "devergroup.io@gmail.com",
-    pass: "Thinh1212@@",
+    user: "noreply.devergroup.io@gmail.com",
+    pass: "qjrqldpvyisstqkp",
     to: opts.to,
     subject: opts.subject
   });
