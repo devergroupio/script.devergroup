@@ -29,11 +29,17 @@
 // };
 // exports.logger = logger;
 import * as Sentry from "@sentry/node";
-import SentryTransport from "@synapsestudios/winston-sentry";
-Sentry.init({
-  dsn:
-    "https://6f90674b239842bea1b4d9d5d78985bc@o394239.ingest.sentry.io/5245806"
-});
+import { SentryTransport, SentryTransportOpts } from "sentry-transport-winston";
+
+const opts: SentryTransportOpts = {
+  sentryOpts: {
+    // @ts-ignore
+    dns:
+      "https://6f90674b239842bea1b4d9d5d78985bc@o394239.ingest.sentry.io/5245806"
+  }
+};
+const sentry = new SentryTransport(opts);
+
 import moment from "moment";
 import winston from "winston";
 const colorizer = winston.format.colorize();
@@ -76,9 +82,7 @@ const getTransports = () => {
       //     filename: "logs/all.log",
       //     format: productionFormat
       // }),
-      new SentryTransport({
-        Sentry
-      }),
+      sentry,
       new winston.transports.Console({
         format: productionFormat
       })

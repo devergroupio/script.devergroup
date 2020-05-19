@@ -648,7 +648,7 @@
     "@sentry/types" "5.15.5"
     tslib "^1.9.3"
 
-"@sentry/node@5.15.5":
+"@sentry/node@5.15.5", "@sentry/node@^5.11.2":
   version "5.15.5"
   resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.15.5.tgz#f64cfcf8770cc0249f48b3ef439a7efcabdcec1d"
   integrity sha512-BK0iTOiiIM0UnydLeT/uUBY1o1Sp85aqwaQRMfZbjMCsgXERLNGvzzV68FDH1cyC1nR6dREK3Gs8bxS4S54aLQ==
@@ -7186,6 +7186,15 @@ sentence-case@^2.1.0:
     no-case "^2.2.0"
     upper-case-first "^1.1.2"
 
+sentry-transport-winston@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/sentry-transport-winston/-/sentry-transport-winston-1.0.2.tgz#5069ff48965217d5cfaeef3406a70555d3924bd4"
+  integrity sha512-cb5MECZWWLVe65Fyo0M9tyswk/QObxQX66fOabzqpwfjTjvbQbCutkWHORtYvzi7tTS76h5GCw1gNv1wJIYD+Q==
+  dependencies:
+    "@sentry/node" "^5.11.2"
+    winston "^3.2.1"
+    winston-transport "^4.3.0"
+
 serve-static@1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
@@ -8425,7 +8434,7 @@ winston-transport@^4.3.0:
     readable-stream "^2.3.6"
     triple-beam "^1.2.0"
 
-winston@*, winston@^3.0.0:
+winston@*, winston@^3.0.0, winston@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/winston/-/winston-3.2.1.tgz#63061377976c73584028be2490a1846055f77f07"
   integrity sha512-zU6vgnS9dAWCEKg/QYigd6cgMVVNwyTzKs81XZtTFuRwJOcDdBg7AU0mXVyNbs7O5RH2zdv+BdNZUlx7mXPuOw==
