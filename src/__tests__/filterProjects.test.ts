@@ -34,7 +34,8 @@ describe("filterProjects function", () => {
             min_budget: 0
           }
         ],
-        ignoredSkills: []
+        ignoredSkills: [],
+        onlineSkills: []
       }
     });
 
@@ -84,6 +85,18 @@ describe("filterProjects function", () => {
             id: 2,
             title: "Javascript"
           }
+        ],
+        onlineSkills: [
+          {
+            skills: [
+              {
+                skill: {
+                  id: 4,
+                  title: "SOMETHING"
+                }
+              }
+            ]
+          }
         ]
       }
     });
@@ -111,7 +124,8 @@ describe("filterProjects function", () => {
             min_budget: 30
           }
         ],
-        ignoredSkills: []
+        ignoredSkills: [],
+        onlineSkills: []
       }
     });
     const projects = [
@@ -163,7 +177,8 @@ describe("filterProjects function", () => {
             description_length: 10
           }
         ],
-        ignoredSkills: []
+        ignoredSkills: [],
+        onlineSkills: []
       }
     });
     const projects = [
@@ -185,7 +200,8 @@ describe("filterProjects function", () => {
     >).mockResolvedValueOnce({
       data: {
         filterSettings: [{}],
-        ignoredSkills: []
+        ignoredSkills: [],
+        onlineSkills: []
       }
     });
     const projects = [
@@ -220,7 +236,8 @@ describe("filterProjects function", () => {
             exchange_rate: 0.5
           }
         ],
-        ignoredSkills: []
+        ignoredSkills: [],
+        onlineSkills: []
       }
     });
     const projects = [
