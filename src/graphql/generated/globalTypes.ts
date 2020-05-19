@@ -152,6 +152,7 @@ export enum projects_update_column {
   recruiter = "recruiter",
   status = "status",
   submitDate = "submitDate",
+  tags = "tags",
   text = "text",
   time = "time",
   title = "title",
@@ -659,6 +660,7 @@ export interface projects_bool_exp {
   recruiter?: Boolean_comparison_exp | null;
   status?: String_comparison_exp | null;
   submitDate?: date_comparison_exp | null;
+  tags?: jsonb_comparison_exp | null;
   text?: String_comparison_exp | null;
   time?: Int_comparison_exp | null;
   title?: String_comparison_exp | null;
@@ -706,6 +708,7 @@ export interface projects_insert_input {
   recruiter?: boolean | null;
   status?: string | null;
   submitDate?: any | null;
+  tags?: any | null;
   text?: string | null;
   time?: number | null;
   title?: string | null;
@@ -769,6 +772,7 @@ export interface projects_set_input {
   recruiter?: boolean | null;
   status?: string | null;
   submitDate?: any | null;
+  tags?: any | null;
   text?: string | null;
   time?: number | null;
   title?: string | null;

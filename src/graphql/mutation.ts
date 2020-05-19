@@ -224,3 +224,14 @@ export const MARK_THREAD_AS_NOTIFIED = gql`
     }
   }
 `;
+
+export const MARK_PROJECT_BY_ID_AS_TIME_OUT = gql`
+  mutation markProjectAsTimeOut($project_id: Int!) {
+    update_projects(
+      where: { id: { _eq: $project_id } }
+      _set: { confirm: -1, bidError: "TIMEOUT" }
+    ) {
+      affected_rows
+    }
+  }
+`;

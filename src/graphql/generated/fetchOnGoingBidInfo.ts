@@ -27,12 +27,12 @@ export interface fetchOnGoingBidInfo_projects {
    * An array relationship
    */
   jobs: fetchOnGoingBidInfo_projects_jobs[];
-  actionText: string;
+  actionText: string | null;
   appended_descr: string | null;
   bidError: string | null;
   buyer: number | null;
   confirm: number | null;
-  currency: string;
+  currency: string | null;
   currencyCode: string;
   exchangerate: number;
   extended: string | null;

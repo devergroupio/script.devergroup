@@ -11,9 +11,13 @@ import {
   fetchOnGoingBidInfo,
   fetchOnGoingBidInfoVariables
 } from "~@/graphql/generated/fetchOnGoingBidInfo";
+import {
+  markProjectAsTimeOut,
+  markProjectAsTimeOutVariables
+} from "~@/graphql/generated/markProjectAsTimeOut";
+import { MARK_PROJECT_BY_ID_AS_TIME_OUT } from "~@/graphql/mutation";
 import { FETCH_BID_SETTINGS, FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
 import { fetchScriptInfo } from "../cron.running";
-
 const fetchBidSettings = async () => {
   const {
     data: { bot_settings_bidsettings }
@@ -34,7 +38,7 @@ const fetchRequiredData = async () => {
     query: FETCH_ONGOING_BIDINFO,
     variables: {
       timeMax: moment(),
-      timeMin: moment().subtract(bidSetting.timer, "seconds") // @TODO: Move this timer to bidSetting
+      timeMin: moment().subtract(bidSetting.timer, "seconds")
     }
   });
   if (bidSettings.length <= 0) {
@@ -63,14 +67,23 @@ export const SCRIPT_CONTENT = async () => {
   logger.info("total projects can bid %s", projects.length);
   const TIMER = bidSetting.timer;
   await Promise.all(
-    projects.map(project => {
+    projects.map(async project => {
       switch (project.confirm) {
         case PROJECT_CONFIRM_TYPE.UNCOFMRIM: {
           const isTimeOut = moment().isAfter(
             moment(project.created_at).add(TIMER, "m")
           );
           if (isTimeOut) {
-            return bidProject(project);
+            // return bidProject(project);
+            return gqlClient.mutate<
+              markProjectAsTimeOut,
+              markProjectAsTimeOutVariables
+            >({
+              mutation: MARK_PROJECT_BY_ID_AS_TIME_OUT,
+              variables: {
+                project_id: project.id
+              }
+            });
           } else {
             console.log("project is waiting to be confirmed", project.id);
           }

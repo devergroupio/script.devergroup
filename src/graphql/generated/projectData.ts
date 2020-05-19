@@ -14,7 +14,7 @@ export interface projectData {
   bidError: string | null;
   jobString: string;
   confirm: number | null;
-  currency: string;
+  currency: string | null;
   title: string;
   currencyCode: string;
   maxbudget: number | null;
