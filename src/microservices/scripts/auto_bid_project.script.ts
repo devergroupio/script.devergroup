@@ -6,7 +6,6 @@ import errorHandling from "~@/core/modules/error.module";
 errorHandling.listen();
 import { bidProject } from "~@/core/modules/freelancer";
 import logger from "~@/core/modules/log.module";
-import { fetchBidSettings as IfetchBidSettings } from "~@/graphql/generated/fetchBidSettings";
 import {
   fetchOnGoingBidInfo,
   fetchOnGoingBidInfoVariables
@@ -16,19 +15,9 @@ import {
   markProjectAsTimeOutVariables
 } from "~@/graphql/generated/markProjectAsTimeOut";
 import { MARK_PROJECT_BY_ID_AS_TIME_OUT } from "~@/graphql/mutation";
-import { FETCH_BID_SETTINGS, FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
+import { FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
 import { fetchScriptInfo } from "../cron.running";
-const fetchBidSettings = async () => {
-  const {
-    data: { bot_settings_bidsettings }
-  } = await gqlClient.query<IfetchBidSettings>({
-    query: FETCH_BID_SETTINGS
-  });
-  if (bot_settings_bidsettings.length > 0) {
-    return bot_settings_bidsettings[0];
-  }
-  throw new Error("Bid setting haven't be setted");
-};
+
 const fetchRequiredData = async () => {
   const {
     data: { projects, bidSettings }
