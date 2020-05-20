@@ -23,6 +23,7 @@ const fetchRequiredData = async () => {
     data: { projects, bidSettings }
   } = await gqlClient.query<fetchOnGoingBidInfo, fetchOnGoingBidInfoVariables>({
     query: FETCH_ONGOING_BIDINFO,
+    fetchPolicy: "no-cache",
     variables: {
       timeMax: moment(),
       timeMin: moment().subtract(1, "day")
@@ -58,7 +59,7 @@ export const SCRIPT_CONTENT = async () => {
       switch (project.confirm) {
         case PROJECT_CONFIRM_TYPE.UNCOFMRIM: {
           const isTimeOut = moment().isAfter(
-            moment(project.created_at).add(TIMER, "m")
+            moment(project.created_at).add(TIMER, "seconds")
           );
           if (isTimeOut) {
             // return bidProject(project);
