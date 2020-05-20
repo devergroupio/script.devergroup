@@ -30,8 +30,6 @@ const fetchBidSettings = async () => {
   throw new Error("Bid setting haven't be setted");
 };
 const fetchRequiredData = async () => {
-  const bidSetting = await fetchBidSettings();
-
   const {
     data: { projects, bidSettings }
   } = await gqlClient.query<fetchOnGoingBidInfo, fetchOnGoingBidInfoVariables>({
