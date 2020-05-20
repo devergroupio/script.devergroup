@@ -38,7 +38,7 @@ const fetchRequiredData = async () => {
     query: FETCH_ONGOING_BIDINFO,
     variables: {
       timeMax: moment(),
-      timeMin: moment().subtract(bidSetting.timer, "seconds")
+      timeMin: moment().subtract(1, "day")
     }
   });
   if (bidSettings.length <= 0) {

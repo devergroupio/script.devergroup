@@ -160,7 +160,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName",
+  userName = "userName"
 }
 
 /**
