@@ -26,6 +26,8 @@ services:
   dv_core_app:
     ports:
       - "1205:80"
+    volumes:
+      - volumes:/home/application/uploads
     env_file:
       - .environments/prod.env
     container_name: devergroup_core_app
@@ -42,6 +44,8 @@ services:
       - "dv_core_hasura_engine"
 volumes:
   dashboard_group_data:
+    external: true
+  core_uploads:
     external: true
 networks:
   ? internal
