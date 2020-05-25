@@ -74,6 +74,7 @@
     "sentry-transport-winston": "^1.0.2",
     "sockjs-client": "^1.4.0",
     "subscriptions-transport-ws": "^0.9.16",
+    "unique-string": "^2.0.0",
     "winston": "^3.0.0",
     "yup": "^0.28.0"
   },

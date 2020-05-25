@@ -676,13 +676,6 @@
     "@sentry/types" "5.15.5"
     tslib "^1.9.3"
 
-"@synapsestudios/winston-sentry@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@synapsestudios/winston-sentry/-/winston-sentry-1.1.0.tgz#d0c2aebb59bf45b3e84a2d103e53b12d05fa3441"
-  integrity sha512-NGLmS8rBBcIEzESA6hVI26g7sejQtZZ6dJm9Xu0ob8Zvq9HiReJa/sNRPX42sK0CEkFjwRO8CUBXjI9Qi8LDBg==
-  dependencies:
-    lodash "^4.17.11"
-
 "@types/axios@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@types/axios/-/axios-0.14.0.tgz#ec2300fbe7d7dddd7eb9d3abf87999964cafce46"
@@ -2475,6 +2468,11 @@ crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
   integrity sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4=
+
+crypto-random-string@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
+  integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
 css-rules@^1.0.9:
   version "1.0.9"
@@ -8096,6 +8094,13 @@ unique-string@^1.0.0:
   integrity sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=
   dependencies:
     crypto-random-string "^1.0.0"
+
+unique-string@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/unique-string/-/unique-string-2.0.0.tgz#39c6451f81afb2749de2b233e3f7c5e8843bd89d"
+  integrity sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==
+  dependencies:
+    crypto-random-string "^2.0.0"
 
 universalify@^0.1.0:
   version "0.1.2"
