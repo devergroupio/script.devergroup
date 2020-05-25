@@ -1,9 +1,9 @@
 import errorHandling from "~@/core/modules/error.module";
 
 import bodyParser from "body-parser";
+import path from "path";
 import { CONFIG } from "~@/core/utils";
 import cronRunning from "~@/microservices/cron.running";
-
 errorHandling.listen();
 
 cronRunning();
@@ -32,11 +32,13 @@ if (CONFIG.IS_ENABLE_API) {
     }),
     api
   );
+  app.use("/uploads", express.static(path.join(__dirname, "../../uploads")));
 
   app.use(
     "/hasura",
     createProxyMiddleware({
       target: CONFIG.HASURA_ENDPOINT,
+      // tslint:disable-next-line:no-shadowed-variable
       pathRewrite: (path, req) => {
         const pathSlashArr = path.split("/").filter(str => str.length > 0);
         if (pathSlashArr.length <= 1) {

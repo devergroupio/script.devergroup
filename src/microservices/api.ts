@@ -354,6 +354,4 @@ app.post("/upload_file", localDiskUpload.single("file"), async (req, res) => {
   });
 });
 
-app.use("/uploads", Express.static(path.join(__dirname, "../../uploads")));
-
 export default app;
