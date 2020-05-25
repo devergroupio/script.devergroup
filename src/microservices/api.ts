@@ -7,12 +7,15 @@ import jwt from "jsonwebtoken";
 import _ from "lodash";
 import moment from "moment";
 import multer from "multer";
+import path from "path";
 import qs from "querystring";
 import request from "request";
+import uniqueString from "unique-string";
 import * as yup from "yup";
 import gqlClient from "~@/core/modules/hasura.module";
 import httpClient from "~@/core/modules/http.module";
 import { CONFIG } from "~@/core/utils";
+
 import {
   fetchThreadByID,
   fetchThreadByIDVariables
@@ -325,4 +328,32 @@ app.post("/message/:thread_id", async (req, res) => {
     });
   }
 });
+
+const localDiskUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, "../../uploads"));
+    },
+    filename: (req, file, cb) => {
+      cb(null, uniqueString() + "." + file.originalname.split(".")[1]);
+    }
+  })
+});
+
+app.post("/upload_file", localDiskUpload.single("file"), async (req, res) => {
+  const file = req.file as any;
+  if (!file) {
+    return res.json({
+      error: true,
+      message: "Please choose a file"
+    });
+  }
+  return res.json({
+    error: false,
+    message: file
+  });
+});
+
+app.use("/uploads", Express.static(path.join(__dirname, "../../uploads")));
+
 export default app;
