@@ -27,7 +27,7 @@ services:
     ports:
       - "1205:80"
     volumes:
-      - volumes:/home/application/uploads
+      - core_uploads:/home/application/uploads
     env_file:
       - .environments/prod.env
     container_name: devergroup_core_app
