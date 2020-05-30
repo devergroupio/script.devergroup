@@ -44,8 +44,8 @@ if(env.BRANCH_NAME == 'master') {
                     sh "cp -rf $ENV_FILE .environments/prod.env"
     }
     sh "chmod +x scripts/deploy.slave.sh"
-    // sh "./scripts/deploy.slave.sh"
-    // sh "docker-compose -f docker-compose.slave.yml up -d"
+    sh "./scripts/deploy.slave.sh"
+    sh "docker-compose -f docker-compose.slave.yml up -d"
   }
 
   node ('master') {

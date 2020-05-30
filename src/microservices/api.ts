@@ -20,11 +20,20 @@ import {
   fetchThreadByID,
   fetchThreadByIDVariables
 } from "~@/graphql/generated/fetchThreadByID";
-import { FETCH_THREAD_BY_ID, FETCH_USERS_BY_EMAILS } from "~@/graphql/query";
+import {
+  serializeProjectById,
+  serializeProjectByIdVariables
+} from "~@/graphql/generated/serializeProjectById";
+import {
+  FECH_SERIALZED_PROJECT_BY_ID,
+  FETCH_THREAD_BY_ID,
+  FETCH_USERS_BY_EMAILS
+} from "~@/graphql/query";
 const tempUpload = multer({
   storage: multer.memoryStorage()
 });
 
+import { getSuggestion } from "~@/core/modules/freelancer/functions/fl_bid_job";
 import { syncOSUserIfNotExisted } from "~@/core/utils/hasura";
 import {
   fetchUsersByEmail,
@@ -37,6 +46,7 @@ import {
 } from "~@/graphql/generated/insertUsers";
 import { INSERT_USER } from "~@/graphql/mutation";
 import { insertThread } from "./socket";
+
 const app = Express.Router();
 
 app.use(
@@ -351,6 +361,43 @@ app.post("/upload_file", localDiskUpload.single("file"), async (req, res) => {
   return res.json({
     error: false,
     message: file
+  });
+});
+
+app.get("/hint/:pid", async (req, res) => {
+  const projectID = req.params.pid;
+  if (!projectID) {
+    return res.status(403).json({
+      error: true,
+      message: "Please specific project id"
+    });
+  }
+
+  const {
+    data: { projects }
+  } = await gqlClient.query<
+    serializeProjectById,
+    serializeProjectByIdVariables
+  >({
+    query: FECH_SERIALZED_PROJECT_BY_ID,
+    variables: {
+      projectId: Number(projectID)
+    }
+  });
+
+  if (projects.length <= 0) {
+    return res.status(404).json({
+      error: true,
+      message: "Project Not found"
+    });
+  }
+  const project = projects[0];
+
+  // @ts-ignore
+  const suggestion = await getSuggestion(project);
+  return res.json({
+    eror: false,
+    message: suggestion
   });
 });
 

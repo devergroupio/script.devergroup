@@ -348,3 +348,54 @@ export const FETCH_USER_SKILLS = gql`
     }
   }
 `;
+
+export const FECH_SERIALZED_PROJECT_BY_ID = gql`
+  query serializeProjectById($projectId: Int!) {
+    projects(where: { id: { _eq: $projectId } }) {
+      jobs: projectsjobs {
+        job {
+          id
+          title
+        }
+      }
+      actionText
+      appended_descr
+      bidError
+      buyer
+      confirm
+      currency
+      currencyCode
+      exchangerate
+      extended
+      featured
+      free_bid_until
+      fulltime
+      hidebids
+      id
+      imgUrl
+      ipcontract
+      isBid
+      jobString
+      linkUrl
+      listed
+      maxbudget
+      minbudget
+      nda
+      nonpublic
+      our_cost
+      projIsHourly
+      recruiter
+      submitDate
+      text
+      time
+      title
+      type
+      urgent
+      userId
+      our_cover_letter
+      userName
+      created_at
+      updated_at
+    }
+  }
+`;

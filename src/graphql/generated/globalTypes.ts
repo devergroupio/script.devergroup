@@ -160,7 +160,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName"
+  userName = "userName",
 }
 
 /**
@@ -217,6 +217,7 @@ export enum user_skill_update_column {
  * unique or primary key constraints on table "users"
  */
 export enum users_constraint {
+  users_id_key = "users_id_key",
   users_pkey = "users_pkey",
 }
 
@@ -227,6 +228,7 @@ export enum users_update_column {
   created_at = "created_at",
   email = "email",
   first_name = "first_name",
+  id = "id",
   isActive = "isActive",
   last_name = "last_name",
   password = "password",
@@ -924,6 +926,7 @@ export interface users_bool_exp {
   created_at?: timestamptz_comparison_exp | null;
   email?: String_comparison_exp | null;
   first_name?: String_comparison_exp | null;
+  id?: Int_comparison_exp | null;
   isActive?: Boolean_comparison_exp | null;
   last_name?: String_comparison_exp | null;
   password?: String_comparison_exp | null;
@@ -940,6 +943,7 @@ export interface users_insert_input {
   created_at?: any | null;
   email?: string | null;
   first_name?: string | null;
+  id?: number | null;
   isActive?: boolean | null;
   last_name?: string | null;
   password?: string | null;
