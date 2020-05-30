@@ -160,7 +160,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName",
+  userName = "userName"
 }
 
 /**
@@ -218,7 +218,7 @@ export enum user_skill_update_column {
  */
 export enum users_constraint {
   users_id_key = "users_id_key",
-  users_pkey = "users_pkey",
+  users_pkey = "users_pkey"
 }
 
 /**
@@ -234,7 +234,7 @@ export enum users_update_column {
   password = "password",
   role = "role",
   status = "status",
-  updated_at = "updated_at",
+  updated_at = "updated_at"
 }
 
 /**
