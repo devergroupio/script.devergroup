@@ -399,3 +399,24 @@ export const FECH_SERIALZED_PROJECT_BY_ID = gql`
     }
   }
 `;
+
+export const GET_ONLINEUSERS_FOR_ONGOING_PROJECT = gql`
+  query getOnlineUserForOGP($projectID: Int!) {
+    projects_by_pk(id: $projectID) {
+      projectsjobs {
+        job {
+          users(where: { user: { status: { _eq: "online" } } }) {
+            user {
+              email
+              id
+              first_name
+              last_name
+              status
+              auto_bid
+            }
+          }
+        }
+      }
+    }
+  }
+`;

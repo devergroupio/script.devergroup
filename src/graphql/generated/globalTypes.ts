@@ -160,7 +160,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName"
+  userName = "userName",
 }
 
 /**
@@ -218,13 +218,14 @@ export enum user_skill_update_column {
  */
 export enum users_constraint {
   users_id_key = "users_id_key",
-  users_pkey = "users_pkey"
+  users_pkey = "users_pkey",
 }
 
 /**
  * update columns of table "users"
  */
 export enum users_update_column {
+  auto_bid = "auto_bid",
   created_at = "created_at",
   email = "email",
   first_name = "first_name",
@@ -234,7 +235,7 @@ export enum users_update_column {
   password = "password",
   role = "role",
   status = "status",
-  updated_at = "updated_at"
+  updated_at = "updated_at",
 }
 
 /**
@@ -923,6 +924,7 @@ export interface users_bool_exp {
   _and?: (users_bool_exp | null)[] | null;
   _not?: users_bool_exp | null;
   _or?: (users_bool_exp | null)[] | null;
+  auto_bid?: Boolean_comparison_exp | null;
   created_at?: timestamptz_comparison_exp | null;
   email?: String_comparison_exp | null;
   first_name?: String_comparison_exp | null;
@@ -940,6 +942,7 @@ export interface users_bool_exp {
  * input type for inserting data into table "users"
  */
 export interface users_insert_input {
+  auto_bid?: boolean | null;
   created_at?: any | null;
   email?: string | null;
   first_name?: string | null;

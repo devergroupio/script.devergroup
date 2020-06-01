@@ -4,6 +4,10 @@ import {
   fetchOSUserByIDVariables
 } from "~@/graphql/generated/fetchOSUserByID";
 import {
+  getOnlineUserForOGP,
+  getOnlineUserForOGPVariables
+} from "~@/graphql/generated/getOnlineUserForOGP";
+import {
   outsource_user_constraint,
   outsource_user_update_column
 } from "~@/graphql/generated/globalTypes";
@@ -12,7 +16,10 @@ import {
   upsertOutsourceUserVariables
 } from "~@/graphql/generated/upsertOutsourceUser";
 import { UPSERT_OUTSOURCE_USER } from "~@/graphql/mutation";
-import { FETCH_OS_USER_BY_ID /* FETCH_USER_SKILLS */ } from "~@/graphql/query";
+import {
+  FETCH_OS_USER_BY_ID /* FETCH_USER_SKILLS */,
+  GET_ONLINEUSERS_FOR_ONGOING_PROJECT
+} from "~@/graphql/query";
 import { fetchAndSyncUser } from "./freelancer";
 
 // import {
@@ -79,3 +86,34 @@ export const syncOSUserIfNotExisted = async id => {
 //     return skills;
 //   }
 // };
+
+export const isCanAutoBid = async projectID => {
+  const {
+    data: { projects_by_pk }
+  } = await hsrClient.query<getOnlineUserForOGP, getOnlineUserForOGPVariables>({
+    query: GET_ONLINEUSERS_FOR_ONGOING_PROJECT,
+    variables: {
+      projectID
+    }
+  });
+  if (!projects_by_pk) {
+    return false;
+  }
+  const { projectsjobs } = projects_by_pk;
+  if (projectsjobs! || projectsjobs.length === 0) {
+    return false;
+  }
+  let iscanAutoBid = false;
+
+  projectsjobs.forEach(pj => {
+    if (pj.job && pj.job.users && pj.job.users.length > 0) {
+      pj.job.users.forEach(user => {
+        if (user.user.auto_bid) {
+          iscanAutoBid = true;
+        }
+      });
+    }
+  });
+
+  return iscanAutoBid;
+};

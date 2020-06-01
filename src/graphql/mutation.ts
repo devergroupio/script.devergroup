@@ -235,3 +235,14 @@ export const MARK_PROJECT_BY_ID_AS_TIME_OUT = gql`
     }
   }
 `;
+
+export const MARK_PROJECT_AS_ACCEPTED = gql`
+  mutation markProjectAsAccepted($projectId: Int!, $confirmStatus: Int!) {
+    update_projects_by_pk(
+      pk_columns: { id: $projectId }
+      _set: { confirm: $confirmStatus }
+    ) {
+      id
+    }
+  }
+`;

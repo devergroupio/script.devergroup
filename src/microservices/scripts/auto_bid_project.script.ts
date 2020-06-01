@@ -6,15 +6,23 @@ import errorHandling from "~@/core/modules/error.module";
 errorHandling.listen();
 import { bidProject } from "~@/core/modules/freelancer";
 import logger from "~@/core/modules/log.module";
+import { isCanAutoBid } from "~@/core/utils/hasura";
 import {
   fetchOnGoingBidInfo,
   fetchOnGoingBidInfoVariables
 } from "~@/graphql/generated/fetchOnGoingBidInfo";
 import {
+  markProjectAsAccepted,
+  markProjectAsAcceptedVariables
+} from "~@/graphql/generated/markProjectAsAccepted";
+import {
   markProjectAsTimeOut,
   markProjectAsTimeOutVariables
 } from "~@/graphql/generated/markProjectAsTimeOut";
-import { MARK_PROJECT_BY_ID_AS_TIME_OUT } from "~@/graphql/mutation";
+import {
+  MARK_PROJECT_AS_ACCEPTED,
+  MARK_PROJECT_BY_ID_AS_TIME_OUT
+} from "~@/graphql/mutation";
 import { FETCH_ONGOING_BIDINFO } from "~@/graphql/query";
 import { fetchScriptInfo } from "../cron.running";
 
@@ -73,7 +81,22 @@ export const SCRIPT_CONTENT = async () => {
               }
             });
           } else {
-            console.log("project is waiting to be confirmed", project.id);
+            const bidAble = await isCanAutoBid(project.id);
+            if (bidAble) {
+              await gqlClient.mutate<
+                markProjectAsAccepted,
+                markProjectAsAcceptedVariables
+              >({
+                mutation: MARK_PROJECT_AS_ACCEPTED,
+                variables: {
+                  confirmStatus: 1,
+                  projectId: project.id
+                }
+              });
+              console.log("marking project as accept");
+            } else {
+              console.log("project is waiting to be confirmed", project.id);
+            }
           }
           break;
         }
