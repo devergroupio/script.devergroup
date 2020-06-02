@@ -100,7 +100,7 @@ export const isCanAutoBid = async projectID => {
     return false;
   }
   const { projectsjobs } = projects_by_pk;
-  if (projectsjobs! || projectsjobs.length === 0) {
+  if (!projectsjobs || projectsjobs.length === 0) {
     return false;
   }
   let iscanAutoBid = false;
