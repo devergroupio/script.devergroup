@@ -178,7 +178,7 @@ const portFolioToText = (portfolios: {
     portfolios[skillTitle].forEach(portfolio => {
       finalText =
         finalText +
-        `- ${portfolio.portfolio.link}(${portfolio.portfolio.excerpt}) \n`;
+        `- ${portfolio.portfolio.link} (${portfolio.portfolio.excerpt}) \n`;
     });
   });
   return finalText;
