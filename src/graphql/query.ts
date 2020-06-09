@@ -420,3 +420,23 @@ export const GET_ONLINEUSERS_FOR_ONGOING_PROJECT = gql`
     }
   }
 `;
+
+export const FETCH_PORTFOLIO = gql`
+  query fetchPortfolio($pid: Int!) {
+    projects_by_pk(id: $pid) {
+      projectsjobs {
+        job {
+          title
+          portfolios {
+            portfolio {
+              excerpt
+              link
+              description
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;

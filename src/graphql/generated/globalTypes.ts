@@ -94,6 +94,42 @@ export enum outsource_user_update_column {
 }
 
 /**
+ * unique or primary key constraints on table "portfolio"
+ */
+export enum portfolio_constraint {
+  portfolio_pkey = "portfolio_pkey",
+}
+
+/**
+ * unique or primary key constraints on table "portfolio_skill"
+ */
+export enum portfolio_skill_constraint {
+  portfolio_skill_pkey = "portfolio_skill_pkey",
+}
+
+/**
+ * update columns of table "portfolio_skill"
+ */
+export enum portfolio_skill_update_column {
+  id = "id",
+  port_id = "port_id",
+  skill_id = "skill_id",
+}
+
+/**
+ * update columns of table "portfolio"
+ */
+export enum portfolio_update_column {
+  created_at = "created_at",
+  description = "description",
+  excerpt = "excerpt",
+  id = "id",
+  images = "images",
+  link = "link",
+  tag = "tag",
+}
+
+/**
  * unique or primary key constraints on table "project_award"
  */
 export enum project_award_constraint {
@@ -160,7 +196,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName"
+  userName = "userName",
 }
 
 /**
@@ -218,7 +254,7 @@ export enum user_skill_update_column {
  */
 export enum users_constraint {
   users_id_key = "users_id_key",
-  users_pkey = "users_pkey"
+  users_pkey = "users_pkey",
 }
 
 /**
@@ -235,7 +271,7 @@ export enum users_update_column {
   password = "password",
   role = "role",
   status = "status",
-  updated_at = "updated_at"
+  updated_at = "updated_at",
 }
 
 /**
@@ -504,6 +540,7 @@ export interface jobs_bool_exp {
   _or?: (jobs_bool_exp | null)[] | null;
   id?: Int_comparison_exp | null;
   isIgnored?: Boolean_comparison_exp | null;
+  portfolios?: portfolio_skill_bool_exp | null;
   projectsjobs?: projectsjobs_bool_exp | null;
   title?: String_comparison_exp | null;
   users?: user_skill_bool_exp | null;
@@ -515,6 +552,7 @@ export interface jobs_bool_exp {
 export interface jobs_insert_input {
   id?: number | null;
   isIgnored?: boolean | null;
+  portfolios?: portfolio_skill_arr_rel_insert_input | null;
   projectsjobs?: projectsjobs_arr_rel_insert_input | null;
   title?: string | null;
   users?: user_skill_arr_rel_insert_input | null;
@@ -591,6 +629,96 @@ export interface outsource_user_on_conflict {
   constraint: outsource_user_constraint;
   update_columns: outsource_user_update_column[];
   where?: outsource_user_bool_exp | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "portfolio". All fields are combined with a logical 'AND'.
+ */
+export interface portfolio_bool_exp {
+  _and?: (portfolio_bool_exp | null)[] | null;
+  _not?: portfolio_bool_exp | null;
+  _or?: (portfolio_bool_exp | null)[] | null;
+  created_at?: timestamptz_comparison_exp | null;
+  description?: String_comparison_exp | null;
+  excerpt?: String_comparison_exp | null;
+  id?: Int_comparison_exp | null;
+  images?: jsonb_comparison_exp | null;
+  link?: String_comparison_exp | null;
+  skills?: portfolio_skill_bool_exp | null;
+  tag?: String_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "portfolio"
+ */
+export interface portfolio_insert_input {
+  created_at?: any | null;
+  description?: string | null;
+  excerpt?: string | null;
+  id?: number | null;
+  images?: any | null;
+  link?: string | null;
+  skills?: portfolio_skill_arr_rel_insert_input | null;
+  tag?: string | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "portfolio"
+ */
+export interface portfolio_obj_rel_insert_input {
+  data: portfolio_insert_input;
+  on_conflict?: portfolio_on_conflict | null;
+}
+
+/**
+ * on conflict condition type for table "portfolio"
+ */
+export interface portfolio_on_conflict {
+  constraint: portfolio_constraint;
+  update_columns: portfolio_update_column[];
+  where?: portfolio_bool_exp | null;
+}
+
+/**
+ * input type for inserting array relation for remote table "portfolio_skill"
+ */
+export interface portfolio_skill_arr_rel_insert_input {
+  data: portfolio_skill_insert_input[];
+  on_conflict?: portfolio_skill_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "portfolio_skill". All fields are combined with a logical 'AND'.
+ */
+export interface portfolio_skill_bool_exp {
+  _and?: (portfolio_skill_bool_exp | null)[] | null;
+  _not?: portfolio_skill_bool_exp | null;
+  _or?: (portfolio_skill_bool_exp | null)[] | null;
+  id?: Int_comparison_exp | null;
+  port_id?: Int_comparison_exp | null;
+  portfolio?: portfolio_bool_exp | null;
+  skill?: jobs_bool_exp | null;
+  skill_id?: Int_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "portfolio_skill"
+ */
+export interface portfolio_skill_insert_input {
+  id?: number | null;
+  port_id?: number | null;
+  portfolio?: portfolio_obj_rel_insert_input | null;
+  skill?: jobs_obj_rel_insert_input | null;
+  skill_id?: number | null;
+}
+
+/**
+ * on conflict condition type for table "portfolio_skill"
+ */
+export interface portfolio_skill_on_conflict {
+  constraint: portfolio_skill_constraint;
+  update_columns: portfolio_skill_update_column[];
+  where?: portfolio_skill_bool_exp | null;
 }
 
 /**

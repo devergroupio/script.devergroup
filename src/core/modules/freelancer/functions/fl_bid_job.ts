@@ -6,8 +6,17 @@ import gqlClient from "~@/core/modules/hasura.module";
 import httpModule from "~@/core/modules/http.module";
 import logger from "~@/core/modules/log.module";
 import { fetchBidSettings as IfetchBidSettings } from "~@/graphql/generated/fetchBidSettings";
+import {
+  fetchPortfolio,
+  fetchPortfolio_projects_by_pk_projectsjobs_job_portfolios,
+  fetchPortfolioVariables
+} from "~@/graphql/generated/fetchPortfolio";
 import { fetchTraining as IfetchTraining } from "~@/graphql/generated/fetchTraining";
-import { FETCH_BID_SETTINGS, FETCH_TRAINING } from "~@/graphql/query";
+import {
+  FETCH_BID_SETTINGS,
+  FETCH_PORTFOLIO,
+  FETCH_TRAINING
+} from "~@/graphql/query";
 import { ILocalProject, Unpromisify } from "~@/types";
 import getToken from "./vendor/fl_get_token";
 export type IBidSettings = Unpromisify<ReturnType<typeof fetchBidSettings>>;
@@ -41,16 +50,54 @@ const fetchTraining = async () => {
   return data;
 };
 
+const fetchPortfolio = async (
+  pid: number
+): Promise<{
+  [T: string]: fetchPortfolio_projects_by_pk_projectsjobs_job_portfolios[];
+}> => {
+  const {
+    data: { projects_by_pk }
+  } = await gqlClient.query<fetchPortfolio, fetchPortfolioVariables>({
+    query: FETCH_PORTFOLIO,
+    variables: {
+      pid
+    }
+  });
+  if (!projects_by_pk) {
+    return {};
+  }
+  const { projectsjobs } = projects_by_pk;
+  const portfolios = {};
+  const portFolioUsed = [];
+  projectsjobs.forEach(projectjob => {
+    const {
+      job: { portfolios: jobPortFolio }
+    } = projectjob;
+    if (jobPortFolio.length > 0) {
+      portfolios[projectjob.job.title] = [];
+      jobPortFolio.forEach(portfolio => {
+        if (!portFolioUsed.includes(portfolio.portfolio.id)) {
+          jobPortFolio.push(portfolio);
+        }
+        portFolioUsed.push(portfolio.portfolio.id);
+      });
+    }
+  });
+  return portfolios;
+};
+
 export const getSuggestion = async (project: ILocalProject) => {
-  const [settings, training] = await Promise.all([
+  const [settings, training, portfolios] = await Promise.all([
     fetchBidSettings(),
-    fetchTraining()
+    fetchTraining(),
+    fetchPortfolio(project.id)
   ]);
   const cost = aiCost(settings, project);
   const description = await getDescription(
     project,
     training.detectPhases,
-    settings.template
+    settings.template,
+    portfolios
   );
   return {
     cost,
@@ -59,9 +106,10 @@ export const getSuggestion = async (project: ILocalProject) => {
 };
 
 export default async (project: ILocalProject) => {
-  const [settings, training] = await Promise.all([
+  const [settings, training, portfolios] = await Promise.all([
     fetchBidSettings(),
-    fetchTraining()
+    fetchTraining(),
+    fetchPortfolio(project.id)
   ]);
 
   const cost = aiCost(settings, project);
@@ -69,7 +117,8 @@ export default async (project: ILocalProject) => {
   const description = await getDescription(
     project,
     training.detectPhases,
-    settings.template
+    settings.template,
+    portfolios
   );
   const BID_DATA: IBidData = {
     id: project.id,
@@ -120,11 +169,27 @@ const requestToBid = async (project: ILocalProject, bidData: IBidData) => {
   }
   await saveProjects([project]);
 };
-
+const portFolioToText = (portfolios: {
+  [T: string]: fetchPortfolio_projects_by_pk_projectsjobs_job_portfolios[];
+}) => {
+  let finalText = "Please check my last works \n";
+  Object.keys(portfolios).forEach(skillTitle => {
+    finalText = finalText + `---${skillTitle}---`;
+    portfolios[skillTitle].forEach(portfolio => {
+      finalText =
+        finalText +
+        `${portfolio.portfolio.link} ( ${portfolio.portfolio.excerpt} )`;
+    });
+  });
+  return finalText;
+};
 const getDescription = async (
   project: ILocalProject,
   detectPhases: ITraining["detectPhases"],
-  defaultTemplate: string
+  defaultTemplate: string,
+  portfolios: {
+    [T: string]: fetchPortfolio_projects_by_pk_projectsjobs_job_portfolios[];
+  }
 ) => {
   const tasks = await aiTasks(project.appended_descr, detectPhases);
   const skills = aiSkills(project.jobString);
@@ -139,6 +204,13 @@ const getDescription = async (
     template = template.replace("#AI_TASKS", taskCollectionString);
   } else {
     template = template.replace("#AI_TASKS", "");
+  }
+
+  // tslint:disable-next-line:prefer-conditional-expression
+  if (Object.keys(portfolios).length > 0) {
+    template = template.replace("#AI_PORTFOLIO", portFolioToText(portfolios));
+  } else {
+    template = template.replace("#AI_PORTFOLIO", "");
   }
   template = template.replace("#AI_SKILLS", skills);
   return template.replace(/\n\s*\n/g, "\n");
