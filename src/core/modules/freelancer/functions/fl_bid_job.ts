@@ -77,7 +77,7 @@ const fetchPortfolio = async (
       portfolios[projectjob.job.title] = [];
       jobPortFolio.forEach(portfolio => {
         if (!portFolioUsed.includes(portfolio.portfolio.id)) {
-          jobPortFolio.push(portfolio);
+          portfolios[projectjob.job.title].push(portfolio);
         }
         portFolioUsed.push(portfolio.portfolio.id);
       });
@@ -178,7 +178,7 @@ const portFolioToText = (portfolios: {
     portfolios[skillTitle].forEach(portfolio => {
       finalText =
         finalText +
-        `${portfolio.portfolio.link} ( ${portfolio.portfolio.excerpt} )`;
+        `- ${portfolio.portfolio.link}(${portfolio.portfolio.excerpt}) \n`;
     });
   });
   return finalText;
