@@ -174,7 +174,7 @@ const portFolioToText = (portfolios: {
 }) => {
   let finalText = "Please check my last works \n";
   Object.keys(portfolios).forEach(skillTitle => {
-    finalText = finalText + `---${skillTitle}---`;
+    finalText = finalText + `---${skillTitle}--- \n`;
     portfolios[skillTitle].forEach(portfolio => {
       finalText =
         finalText +
