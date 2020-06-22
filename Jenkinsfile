@@ -16,15 +16,15 @@ if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
           }
         }
 
-        stage('unit_test') {
-          docker.image('node:12.16.3').inside {
-              configFileProvider([configFile(fileId: 'development.env', variable: 'ENV_FILE')]) {
-                    sh "mkdir -p ./.environments"
-                    sh "cp -rf $ENV_FILE ./.environments/dev.env"
-              }
-              sh "npm run test"
-          }
-        }
+        // stage('unit_test') {
+        //   docker.image('node:12.16.3').inside {
+        //       configFileProvider([configFile(fileId: 'development.env', variable: 'ENV_FILE')]) {
+        //             sh "mkdir -p ./.environments"
+        //             sh "cp -rf $ENV_FILE ./.environments/dev.env"
+        //       }
+        //       sh "npm run test"
+        //   }
+        // }
 
         // if(env.BRANCH_NAME == 'master') {
         //   stage('build') {
