@@ -18,7 +18,7 @@ if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
 
         stage('unit_test') {
           docker.image('node:12.16.3').inside {
-              configFileProvider([configFile(fileId: 'dv_core.dev.env', variable: 'ENV_FILE')]) {
+              configFileProvider([configFile(fileId: 'development.env', variable: 'ENV_FILE')]) {
                     sh "mkdir -p ./.environments"
                     sh "cp -rf $ENV_FILE ./.environments/dev.env"
               }
@@ -37,20 +37,20 @@ if(env.BRANCH_NAME ==~ /^PR-.*|master/) {
 }
 
 if(env.BRANCH_NAME == 'master') {
-  node('production_instagram') {
-    checkout scm
-    configFileProvider([configFile(fileId: 'dv_core.slave.env', variable: 'ENV_FILE')]) {
-                    sh "mkdir -p ./.environments"
-                    sh "cp -rf $ENV_FILE .environments/prod.env"
-    }
-    sh "chmod +x scripts/deploy.slave.sh"
-    sh "./scripts/deploy.slave.sh"
-    sh "docker-compose -f docker-compose.slave.yml up -d"
-  }
+  // node('production_instagram') {
+  //   checkout scm
+  //   configFileProvider([configFile(fileId: 'dv_core.slave.env', variable: 'ENV_FILE')]) {
+  //                   sh "mkdir -p ./.environments"
+  //                   sh "cp -rf $ENV_FILE .environments/prod.env"
+  //   }
+  //   sh "chmod +x scripts/deploy.slave.sh"
+  //   sh "./scripts/deploy.slave.sh"
+  //   sh "docker-compose -f docker-compose.slave.yml up -d"
+  // }
 
   node ('master') {
     checkout scm
-    configFileProvider([configFile(fileId: 'dv_core.prod.env', variable: 'ENV_FILE')]) {
+    configFileProvider([configFile(fileId: 'production.env', variable: 'ENV_FILE')]) {
                     sh "mkdir -p ./.environments"
                     sh "cp -rf $ENV_FILE .environments/prod.env"
     }
