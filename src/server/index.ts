@@ -55,6 +55,6 @@ if (CONFIG.IS_ENABLE_API) {
   );
 
   app.listen(CONFIG.PORT, () => {
-    console.log("> listen on port", process.env.PORT);
+    console.log("> application listen on port", process.env.PORT);
   });
 }
