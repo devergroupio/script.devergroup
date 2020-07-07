@@ -1,0 +1,1466 @@
+{
+  "version": 2,
+  "tables": [
+    {
+      "table": {
+        "schema": "public",
+        "name": "board"
+      },
+      "array_relationships": [
+        {
+          "name": "issues",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "board_id",
+              "table": {
+                "schema": "public",
+                "name": "board_issue"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {},
+            "columns": [
+              "title",
+              "created_at",
+              "id",
+              "description",
+              "status_list"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "status_list",
+              "description",
+              "created_at",
+              "title"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "status_list",
+              "description",
+              "created_at",
+              "title"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "delete_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "board_issue"
+      },
+      "object_relationships": [
+        {
+          "name": "board",
+          "using": {
+            "foreign_key_constraint_on": "board_id"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "members",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "issue_id",
+              "table": {
+                "schema": "public",
+                "name": "issue_member"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {},
+            "columns": [
+              "title",
+              "description",
+              "deadline",
+              "tags",
+              "cost",
+              "order",
+              "board_id",
+              "id",
+              "status",
+              "weight",
+              "prLink"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "cost",
+              "weight",
+              "board_id",
+              "order",
+              "tags",
+              "description",
+              "prLink",
+              "title",
+              "deadline",
+              "id",
+              "status"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "cost",
+              "weight",
+              "board_id",
+              "order",
+              "tags",
+              "description",
+              "prLink",
+              "title",
+              "deadline",
+              "id",
+              "status"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "delete_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "bot_settings_bidsettings"
+      },
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "bid_rate",
+              "min_cost",
+              "timer",
+              "id",
+              "template"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "bot_settings_filterwork"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "bot_training_detectphases"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "bot_training_nottasks"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "chat_attachment"
+      },
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {},
+            "columns": [
+              "thread_id",
+              "message_id",
+              "user_id",
+              "_data",
+              "created_at"
+            ],
+            "backend_only": false
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "check": {},
+            "columns": [
+              "thread_id",
+              "message_id",
+              "user_id",
+              "_data",
+              "created_at"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "message_id",
+              "thread_id",
+              "created_at",
+              "_data",
+              "user_id"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "message_id",
+              "thread_id",
+              "created_at",
+              "_data",
+              "user_id"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "thread_id",
+              "message_id",
+              "user_id",
+              "_data",
+              "created_at"
+            ],
+            "filter": {},
+            "check": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "chat_log"
+      },
+      "object_relationships": [
+        {
+          "name": "thread",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "chat_thread"
+              },
+              "column_mapping": {
+                "thread_id": "id"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {},
+            "columns": [
+              "is_notified",
+              "is_readed",
+              "id",
+              "thread_id",
+              "_data",
+              "created_at"
+            ],
+            "backend_only": false
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "check": {},
+            "columns": [
+              "thread_id",
+              "_data",
+              "id",
+              "is_readed",
+              "created_at"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "thread_id",
+              "_data",
+              "id",
+              "is_readed",
+              "created_at",
+              "is_notified"
+            ],
+            "filter": {
+              "thread": {
+                "project": {
+                  "projectsjobs": {
+                    "job": {
+                      "users": {
+                        "user": {
+                          "email": {
+                            "_eq": "X-Hasura-User-Id"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "is_readed",
+              "id",
+              "thread_id",
+              "_data",
+              "created_at"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "is_notified",
+              "is_readed",
+              "id",
+              "thread_id",
+              "_data",
+              "created_at"
+            ],
+            "filter": {},
+            "check": null
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "is_readed",
+              "id",
+              "thread_id",
+              "_data",
+              "created_at"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "chat_thread"
+      },
+      "object_relationships": [
+        {
+          "name": "project",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "projects"
+              },
+              "column_mapping": {
+                "project_id": "id"
+              }
+            }
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "outsource_user"
+              },
+              "column_mapping": {
+                "customer_id": "user_id"
+              }
+            }
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "messages",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "chat_log"
+              },
+              "column_mapping": {
+                "id": "thread_id"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "USER",
+          "permission": {
+            "check": {},
+            "columns": [
+              "id",
+              "project_id",
+              "customer_id",
+              "updated_at"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "project_id",
+              "customer_id",
+              "updated_at"
+            ],
+            "filter": {
+              "project": {
+                "projectsjobs": {
+                  "job": {
+                    "users": {
+                      "user": {
+                        "email": {
+                          "_eq": "X-Hasura-User-Id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "customer_id",
+              "id",
+              "project_id",
+              "updated_at"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "id",
+              "project_id",
+              "customer_id",
+              "updated_at"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "clocks"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "demo_app"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "issue_member"
+      },
+      "object_relationships": [
+        {
+          "name": "member",
+          "using": {
+            "foreign_key_constraint_on": "member_id"
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {},
+            "columns": [
+              "id",
+              "issue_id",
+              "member_id"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "member_id",
+              "issue_id"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "member_id",
+              "issue_id"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "delete_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "jobs"
+      },
+      "array_relationships": [
+        {
+          "name": "portfolios",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "skill_id",
+              "table": {
+                "schema": "public",
+                "name": "portfolio_skill"
+              }
+            }
+          }
+        },
+        {
+          "name": "projectsjobs",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "job_id",
+              "table": {
+                "schema": "public",
+                "name": "projectsjobs"
+              }
+            }
+          }
+        },
+        {
+          "name": "users",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "skill_id",
+              "table": {
+                "schema": "public",
+                "name": "user_skill"
+              }
+            }
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "isIgnored",
+              "id",
+              "title"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "manager",
+          "permission": {
+            "columns": [],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "outsource_user"
+      },
+      "insert_permissions": [
+        {
+          "role": "USER",
+          "permission": {
+            "check": {},
+            "columns": [
+              "user_id",
+              "_data"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "user_id",
+              "_data"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "user_id",
+              "_data"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "user_id",
+              "_data"
+            ],
+            "filter": {},
+            "check": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "portfolio"
+      },
+      "array_relationships": [
+        {
+          "name": "skills",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "port_id",
+              "table": {
+                "schema": "public",
+                "name": "portfolio_skill"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "portfolio_skill"
+      },
+      "object_relationships": [
+        {
+          "name": "portfolio",
+          "using": {
+            "foreign_key_constraint_on": "port_id"
+          }
+        },
+        {
+          "name": "skill",
+          "using": {
+            "foreign_key_constraint_on": "skill_id"
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "project_award"
+      },
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "pid",
+              "_data",
+              "id"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "projects"
+      },
+      "array_relationships": [
+        {
+          "name": "projectsjobs",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "project_id",
+              "table": {
+                "schema": "public",
+                "name": "projectsjobs"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "USER",
+          "permission": {
+            "check": {},
+            "columns": [
+              "id",
+              "type",
+              "userName",
+              "actionText",
+              "projIsHourly",
+              "jobString",
+              "linkUrl",
+              "title",
+              "text",
+              "submitDate",
+              "currency",
+              "currencyCode",
+              "nonpublic",
+              "time",
+              "urgent",
+              "featured",
+              "fulltime",
+              "nda",
+              "hidebids",
+              "ipcontract",
+              "recruiter",
+              "listed",
+              "extended",
+              "imgUrl",
+              "free_bid_until",
+              "isBid",
+              "bidError",
+              "maxbudget",
+              "minbudget",
+              "buyer",
+              "confirm",
+              "our_cost",
+              "created_at",
+              "updated_at",
+              "exchangerate",
+              "userId",
+              "lastSync",
+              "status",
+              "appended_descr",
+              "our_cover_letter"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "actionText",
+              "appended_descr",
+              "bidError",
+              "buyer",
+              "confirm",
+              "created_at",
+              "currency",
+              "currencyCode",
+              "exchangerate",
+              "extended",
+              "featured",
+              "free_bid_until",
+              "fulltime",
+              "hidebids",
+              "id",
+              "imgUrl",
+              "ipcontract",
+              "isBid",
+              "jobString",
+              "lastSync",
+              "linkUrl",
+              "listed",
+              "maxbudget",
+              "minbudget",
+              "nda",
+              "nonpublic",
+              "our_cost",
+              "our_cover_letter",
+              "projIsHourly",
+              "recruiter",
+              "status",
+              "submitDate",
+              "tags",
+              "text",
+              "time",
+              "title",
+              "type",
+              "updated_at",
+              "urgent",
+              "userId",
+              "userName"
+            ],
+            "filter": {
+              "projectsjobs": {
+                "job": {
+                  "users": {
+                    "user": {
+                      "email": {
+                        "_eq": "X-Hasura-User-Id"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "featured",
+              "fulltime",
+              "hidebids",
+              "isBid",
+              "listed",
+              "nda",
+              "nonpublic",
+              "projIsHourly",
+              "recruiter",
+              "urgent",
+              "submitDate",
+              "exchangerate",
+              "our_cost",
+              "buyer",
+              "confirm",
+              "free_bid_until",
+              "id",
+              "maxbudget",
+              "minbudget",
+              "time",
+              "userId",
+              "appended_descr",
+              "bidError",
+              "extended",
+              "ipcontract",
+              "our_cover_letter",
+              "created_at",
+              "lastSync",
+              "updated_at",
+              "actionText",
+              "currency",
+              "currencyCode",
+              "imgUrl",
+              "jobString",
+              "linkUrl",
+              "status",
+              "text",
+              "title",
+              "type",
+              "userName"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "type",
+              "userName",
+              "actionText",
+              "projIsHourly",
+              "jobString",
+              "linkUrl",
+              "title",
+              "text",
+              "submitDate",
+              "currency",
+              "currencyCode",
+              "nonpublic",
+              "time",
+              "urgent",
+              "featured",
+              "fulltime",
+              "nda",
+              "hidebids",
+              "ipcontract",
+              "recruiter",
+              "listed",
+              "extended",
+              "imgUrl",
+              "free_bid_until",
+              "isBid",
+              "bidError",
+              "maxbudget",
+              "minbudget",
+              "buyer",
+              "confirm",
+              "our_cost",
+              "created_at",
+              "updated_at",
+              "exchangerate",
+              "userId",
+              "lastSync",
+              "status",
+              "appended_descr",
+              "our_cover_letter",
+              "tags"
+            ],
+            "filter": {
+              "projectsjobs": {
+                "job": {
+                  "users": {
+                    "user": {
+                      "email": {
+                        "_eq": "X-Hasura-User-Id"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "check": null
+          }
+        },
+        {
+          "role": "USER",
+          "permission": {
+            "columns": [
+              "featured",
+              "fulltime",
+              "hidebids",
+              "isBid",
+              "listed",
+              "nda",
+              "nonpublic",
+              "projIsHourly",
+              "recruiter",
+              "urgent",
+              "submitDate",
+              "exchangerate",
+              "our_cost",
+              "buyer",
+              "confirm",
+              "free_bid_until",
+              "id",
+              "maxbudget",
+              "minbudget",
+              "time",
+              "userId",
+              "appended_descr",
+              "bidError",
+              "extended",
+              "ipcontract",
+              "our_cover_letter",
+              "created_at",
+              "lastSync",
+              "updated_at",
+              "actionText",
+              "currency",
+              "currencyCode",
+              "imgUrl",
+              "jobString",
+              "linkUrl",
+              "status",
+              "text",
+              "title",
+              "type",
+              "userName"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "projectsjobs"
+      },
+      "object_relationships": [
+        {
+          "name": "job",
+          "using": {
+            "foreign_key_constraint_on": "job_id"
+          }
+        },
+        {
+          "name": "project",
+          "using": {
+            "foreign_key_constraint_on": "project_id"
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "project_id",
+              "job_id"
+            ],
+            "filter": {}
+          }
+        },
+        {
+          "role": "manager",
+          "permission": {
+            "columns": [
+              "job_id",
+              "project_id"
+            ],
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "scripts"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_cache"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_caches"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_last_month"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_last_week"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_today"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "top_jobs_yesterday"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "unsupported_customer"
+      },
+      "object_relationships": [
+        {
+          "name": "thread",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "chat_thread"
+              },
+              "column_mapping": {
+                "thread_id": "id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "user_skill"
+      },
+      "object_relationships": [
+        {
+          "name": "skill",
+          "using": {
+            "foreign_key_constraint_on": "skill_id"
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "user_id"
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "check": {
+              "user": {
+                "email": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            },
+            "columns": [
+              "user_id",
+              "skill_id",
+              "id"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "skill_id",
+              "user_id"
+            ],
+            "filter": {
+              "user": {
+                "email": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            }
+          }
+        },
+        {
+          "role": "manager",
+          "permission": {
+            "columns": [
+              "user_id",
+              "skill_id",
+              "id"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "id",
+              "skill_id",
+              "user_id"
+            ],
+            "filter": {
+              "user": {
+                "email": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            },
+            "check": {
+              "user": {
+                "email": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "delete_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "filter": {
+              "user": {
+                "email": {
+                  "_eq": "X-Hasura-User-Id"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "users"
+      },
+      "array_relationships": [
+        {
+          "name": "skills",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "user_id",
+              "table": {
+                "schema": "public",
+                "name": "user_skill"
+              }
+            }
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "manager",
+          "permission": {
+            "check": {},
+            "columns": [
+              "created_at",
+              "email",
+              "first_name",
+              "id",
+              "isActive",
+              "last_name",
+              "password",
+              "role",
+              "status",
+              "updated_at"
+            ],
+            "backend_only": false
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "auto_bid",
+              "created_at",
+              "email",
+              "first_name",
+              "id",
+              "isActive",
+              "last_name",
+              "role",
+              "status",
+              "updated_at"
+            ],
+            "filter": {
+              "_exists": {
+                "_where": {
+                  "email": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                "_table": {
+                  "schema": "public",
+                  "name": "users"
+                }
+              }
+            },
+            "allow_aggregations": true
+          }
+        },
+        {
+          "role": "manager",
+          "permission": {
+            "columns": [
+              "created_at",
+              "email",
+              "first_name",
+              "id",
+              "isActive",
+              "last_name",
+              "password",
+              "role",
+              "status",
+              "updated_at"
+            ],
+            "filter": {}
+          }
+        }
+      ],
+      "update_permissions": [
+        {
+          "role": "developer",
+          "permission": {
+            "columns": [
+              "auto_bid",
+              "created_at",
+              "email",
+              "first_name",
+              "id",
+              "isActive",
+              "last_name",
+              "password",
+              "role",
+              "status",
+              "updated_at"
+            ],
+            "filter": {
+              "email": {
+                "_eq": "X-Hasura-User-Id"
+              }
+            },
+            "check": null
+          }
+        },
+        {
+          "role": "manager",
+          "permission": {
+            "columns": [
+              "auto_bid",
+              "created_at",
+              "email",
+              "first_name",
+              "id",
+              "isActive",
+              "last_name",
+              "password",
+              "role",
+              "status",
+              "updated_at"
+            ],
+            "filter": {},
+            "check": null
+          }
+        }
+      ],
+      "delete_permissions": [
+        {
+          "role": "manager",
+          "permission": {
+            "filter": {}
+          }
+        }
+      ]
+    }
+  ]
+}
