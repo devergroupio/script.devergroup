@@ -104,7 +104,7 @@ export enum chat_thread_update_column {
   id = "id",
   isForward = "isForward",
   project_id = "project_id",
-  updated_at = "updated_at",
+  updated_at = "updated_at"
 }
 
 /**
@@ -189,7 +189,7 @@ export enum portfolio_update_column {
   id = "id",
   images = "images",
   link = "link",
-  tags = "tags",
+  tags = "tags"
 }
 
 /**
@@ -259,7 +259,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName",
+  userName = "userName"
 }
 
 /**
@@ -317,7 +317,7 @@ export enum user_skill_update_column {
  */
 export enum users_constraint {
   users_id_key = "users_id_key",
-  users_pkey = "users_pkey",
+  users_pkey = "users_pkey"
 }
 
 /**
@@ -334,7 +334,7 @@ export enum users_update_column {
   password = "password",
   role = "role",
   status = "status",
-  updated_at = "updated_at",
+  updated_at = "updated_at"
 }
 
 /**
