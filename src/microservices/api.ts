@@ -34,6 +34,7 @@ const tempUpload = multer({
 });
 
 import { getSuggestion } from "~@/core/modules/freelancer/functions/fl_bid_job";
+import { fetchFullProjectInformation } from "~@/core/utils/freelancer";
 import { syncOSUserIfNotExisted } from "~@/core/utils/hasura";
 import {
   fetchUsersByEmail,
@@ -339,6 +340,20 @@ app.post("/message/:thread_id", async (req, res) => {
   }
 });
 
+app.get("/full_project/:project_id", async (req, res) => {
+  try {
+    const data = await fetchFullProjectInformation(req.params.project_id);
+    return res.json({
+      isError: false,
+      message: data
+    });
+  } catch (err) {
+    res.status(500).json({
+      isError: true,
+      message: err.toString()
+    });
+  }
+});
 const localDiskUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {

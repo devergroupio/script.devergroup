@@ -76,6 +76,7 @@ export interface IEnv {
   FREELANCER_HOST: string;
   PORT: number;
   FREELANCER_APP_COOKIE: string;
+  SECOND_ACCOUNT_COOKIE: string;
   EXCLUDE_SCRIPTS: string[];
   MODE: string;
   SOCKET_HASH: string;
@@ -104,5 +105,6 @@ export const CONFIG: IEnv = {
   MODE: process.env.MODE,
   FREELANCER_URL_BID: "https://www.freelancer.com/ajax/sellers/onplacebid.php",
   FREELANCER_APP_COOKIE: process.env.FREELANCER_APP_COOKIE,
+  SECOND_ACCOUNT_COOKIE: process.env.SECOND_ACCOUNT_COOKIE,
   FREELANCER_USER_AGENT: process.env.FREELANCER_USER_AGENT
 };

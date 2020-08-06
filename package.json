@@ -52,6 +52,7 @@
     "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "devergroup-error": "^1.0.0",
+    "devergroup-request": "^1.1.4",
     "dotenv-safe": "^6.0.0",
     "ejs": "^3.1.2",
     "error-stack-parser": "^2.0.4",

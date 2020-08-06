@@ -8,6 +8,50 @@
 //==============================================================
 
 /**
+ * unique or primary key constraints on table "board"
+ */
+export enum board_constraint {
+  board_pkey = "board_pkey",
+}
+
+/**
+ * unique or primary key constraints on table "board_issue"
+ */
+export enum board_issue_constraint {
+  board_issue_issue_id_key = "board_issue_issue_id_key",
+  board_issue_pkey = "board_issue_pkey",
+}
+
+/**
+ * update columns of table "board_issue"
+ */
+export enum board_issue_update_column {
+  board_id = "board_id",
+  cost = "cost",
+  deadline = "deadline",
+  description = "description",
+  id = "id",
+  order = "order",
+  prLink = "prLink",
+  status = "status",
+  tags = "tags",
+  title = "title",
+  weight = "weight",
+}
+
+/**
+ * update columns of table "board"
+ */
+export enum board_update_column {
+  archived = "archived",
+  created_at = "created_at",
+  description = "description",
+  id = "id",
+  status_list = "status_list",
+  title = "title",
+}
+
+/**
  * unique or primary key constraints on table "chat_attachment"
  */
 export enum chat_attachment_constraint {
@@ -55,10 +99,29 @@ export enum chat_thread_constraint {
  * update columns of table "chat_thread"
  */
 export enum chat_thread_update_column {
+  board_id = "board_id",
   customer_id = "customer_id",
   id = "id",
+  isForward = "isForward",
   project_id = "project_id",
   updated_at = "updated_at",
+}
+
+/**
+ * unique or primary key constraints on table "issue_member"
+ */
+export enum issue_member_constraint {
+  issue_member_member_id2_issue_id_key = "issue_member_member_id2_issue_id_key",
+  issue_member_pkey = "issue_member_pkey",
+}
+
+/**
+ * update columns of table "issue_member"
+ */
+export enum issue_member_update_column {
+  id = "id",
+  issue_id = "issue_id",
+  member_id = "member_id",
 }
 
 /**
@@ -126,7 +189,7 @@ export enum portfolio_update_column {
   id = "id",
   images = "images",
   link = "link",
-  tag = "tag",
+  tags = "tags",
 }
 
 /**
@@ -196,7 +259,7 @@ export enum projects_update_column {
   updated_at = "updated_at",
   urgent = "urgent",
   userId = "userId",
-  userName = "userName"
+  userName = "userName",
 }
 
 /**
@@ -254,7 +317,7 @@ export enum user_skill_update_column {
  */
 export enum users_constraint {
   users_id_key = "users_id_key",
-  users_pkey = "users_pkey"
+  users_pkey = "users_pkey",
 }
 
 /**
@@ -271,7 +334,7 @@ export enum users_update_column {
   password = "password",
   role = "role",
   status = "status",
-  updated_at = "updated_at"
+  updated_at = "updated_at",
 }
 
 /**
@@ -353,6 +416,118 @@ export interface bigint_comparison_exp {
   _lte?: any | null;
   _neq?: any | null;
   _nin?: any[] | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "board". All fields are combined with a logical 'AND'.
+ */
+export interface board_bool_exp {
+  _and?: (board_bool_exp | null)[] | null;
+  _not?: board_bool_exp | null;
+  _or?: (board_bool_exp | null)[] | null;
+  archived?: Boolean_comparison_exp | null;
+  created_at?: timestamptz_comparison_exp | null;
+  description?: String_comparison_exp | null;
+  id?: Int_comparison_exp | null;
+  issues?: board_issue_bool_exp | null;
+  status_list?: jsonb_comparison_exp | null;
+  title?: String_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "board"
+ */
+export interface board_insert_input {
+  archived?: boolean | null;
+  created_at?: any | null;
+  description?: string | null;
+  id?: number | null;
+  issues?: board_issue_arr_rel_insert_input | null;
+  status_list?: any | null;
+  title?: string | null;
+}
+
+/**
+ * input type for inserting array relation for remote table "board_issue"
+ */
+export interface board_issue_arr_rel_insert_input {
+  data: board_issue_insert_input[];
+  on_conflict?: board_issue_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "board_issue". All fields are combined with a logical 'AND'.
+ */
+export interface board_issue_bool_exp {
+  _and?: (board_issue_bool_exp | null)[] | null;
+  _not?: board_issue_bool_exp | null;
+  _or?: (board_issue_bool_exp | null)[] | null;
+  board?: board_bool_exp | null;
+  board_id?: Int_comparison_exp | null;
+  cost?: Float_comparison_exp | null;
+  deadline?: timestamptz_comparison_exp | null;
+  description?: String_comparison_exp | null;
+  id?: String_comparison_exp | null;
+  members?: issue_member_bool_exp | null;
+  order?: Int_comparison_exp | null;
+  prLink?: String_comparison_exp | null;
+  status?: String_comparison_exp | null;
+  tags?: jsonb_comparison_exp | null;
+  title?: String_comparison_exp | null;
+  weight?: Float_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "board_issue"
+ */
+export interface board_issue_insert_input {
+  board?: board_obj_rel_insert_input | null;
+  board_id?: number | null;
+  cost?: number | null;
+  deadline?: any | null;
+  description?: string | null;
+  id?: string | null;
+  members?: issue_member_arr_rel_insert_input | null;
+  order?: number | null;
+  prLink?: string | null;
+  status?: string | null;
+  tags?: any | null;
+  title?: string | null;
+  weight?: number | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "board_issue"
+ */
+export interface board_issue_obj_rel_insert_input {
+  data: board_issue_insert_input;
+  on_conflict?: board_issue_on_conflict | null;
+}
+
+/**
+ * on conflict condition type for table "board_issue"
+ */
+export interface board_issue_on_conflict {
+  constraint: board_issue_constraint;
+  update_columns: board_issue_update_column[];
+  where?: board_issue_bool_exp | null;
+}
+
+/**
+ * input type for inserting object relation for remote table "board"
+ */
+export interface board_obj_rel_insert_input {
+  data: board_insert_input;
+  on_conflict?: board_on_conflict | null;
+}
+
+/**
+ * on conflict condition type for table "board"
+ */
+export interface board_on_conflict {
+  constraint: board_constraint;
+  update_columns: board_update_column[];
+  where?: board_bool_exp | null;
 }
 
 /**
@@ -477,8 +652,10 @@ export interface chat_thread_bool_exp {
   _and?: (chat_thread_bool_exp | null)[] | null;
   _not?: chat_thread_bool_exp | null;
   _or?: (chat_thread_bool_exp | null)[] | null;
+  board_id?: Int_comparison_exp | null;
   customer_id?: bigint_comparison_exp | null;
   id?: bigint_comparison_exp | null;
+  isForward?: Boolean_comparison_exp | null;
   messages?: chat_log_bool_exp | null;
   project?: projects_bool_exp | null;
   project_id?: bigint_comparison_exp | null;
@@ -490,8 +667,10 @@ export interface chat_thread_bool_exp {
  * input type for inserting data into table "chat_thread"
  */
 export interface chat_thread_insert_input {
+  board_id?: number | null;
   customer_id?: any | null;
   id?: any | null;
+  isForward?: boolean | null;
   messages?: chat_log_arr_rel_insert_input | null;
   project?: projects_obj_rel_insert_input | null;
   project_id?: any | null;
@@ -529,6 +708,48 @@ export interface date_comparison_exp {
   _lte?: any | null;
   _neq?: any | null;
   _nin?: any[] | null;
+}
+
+/**
+ * input type for inserting array relation for remote table "issue_member"
+ */
+export interface issue_member_arr_rel_insert_input {
+  data: issue_member_insert_input[];
+  on_conflict?: issue_member_on_conflict | null;
+}
+
+/**
+ * Boolean expression to filter rows from the table "issue_member". All fields are combined with a logical 'AND'.
+ */
+export interface issue_member_bool_exp {
+  _and?: (issue_member_bool_exp | null)[] | null;
+  _not?: issue_member_bool_exp | null;
+  _or?: (issue_member_bool_exp | null)[] | null;
+  board_issue?: board_issue_bool_exp | null;
+  id?: Int_comparison_exp | null;
+  issue_id?: String_comparison_exp | null;
+  member?: users_bool_exp | null;
+  member_id?: Int_comparison_exp | null;
+}
+
+/**
+ * input type for inserting data into table "issue_member"
+ */
+export interface issue_member_insert_input {
+  board_issue?: board_issue_obj_rel_insert_input | null;
+  id?: number | null;
+  issue_id?: string | null;
+  member?: users_obj_rel_insert_input | null;
+  member_id?: number | null;
+}
+
+/**
+ * on conflict condition type for table "issue_member"
+ */
+export interface issue_member_on_conflict {
+  constraint: issue_member_constraint;
+  update_columns: issue_member_update_column[];
+  where?: issue_member_bool_exp | null;
 }
 
 /**
@@ -645,7 +866,7 @@ export interface portfolio_bool_exp {
   images?: jsonb_comparison_exp | null;
   link?: String_comparison_exp | null;
   skills?: portfolio_skill_bool_exp | null;
-  tag?: String_comparison_exp | null;
+  tags?: jsonb_comparison_exp | null;
 }
 
 /**
@@ -659,7 +880,7 @@ export interface portfolio_insert_input {
   images?: any | null;
   link?: string | null;
   skills?: portfolio_skill_arr_rel_insert_input | null;
-  tag?: string | null;
+  tags?: any | null;
 }
 
 /**
@@ -766,6 +987,7 @@ export interface projects_bool_exp {
   created_at?: timestamptz_comparison_exp | null;
   currency?: String_comparison_exp | null;
   currencyCode?: String_comparison_exp | null;
+  employer?: outsource_user_bool_exp | null;
   exchangerate?: Float_comparison_exp | null;
   extended?: String_comparison_exp | null;
   featured?: Boolean_comparison_exp | null;
@@ -814,6 +1036,7 @@ export interface projects_insert_input {
   created_at?: any | null;
   currency?: string | null;
   currencyCode?: string | null;
+  employer?: outsource_user_obj_rel_insert_input | null;
   exchangerate?: number | null;
   extended?: string | null;
   featured?: boolean | null;
@@ -1058,6 +1281,7 @@ export interface users_bool_exp {
   first_name?: String_comparison_exp | null;
   id?: Int_comparison_exp | null;
   isActive?: Boolean_comparison_exp | null;
+  issue_members?: issue_member_bool_exp | null;
   last_name?: String_comparison_exp | null;
   password?: String_comparison_exp | null;
   role?: String_comparison_exp | null;
@@ -1076,6 +1300,7 @@ export interface users_insert_input {
   first_name?: string | null;
   id?: number | null;
   isActive?: boolean | null;
+  issue_members?: issue_member_arr_rel_insert_input | null;
   last_name?: string | null;
   password?: string | null;
   role?: string | null;
