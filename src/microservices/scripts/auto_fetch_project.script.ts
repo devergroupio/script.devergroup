@@ -20,6 +20,7 @@ export const SCRIPT_CONTENT = async () => {
   logger.info("script: %s is starting", "fetch_project");
   const rawProjects = await fetchProjects();
   const projects = serializeProjects(await filterProjects(rawProjects));
+
   await saveProjects(projects);
 };
 

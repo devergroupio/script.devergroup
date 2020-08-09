@@ -21,6 +21,32 @@ export const sendMail = async (opts: {
   });
 };
 
+export const sendProjectNotification = async (opts: {
+  to: string;
+  notification: {
+    msg: string;
+    title: string;
+    link: string;
+  };
+}) => {
+  const html = await ejsPromise.renderFile(
+    path.join(__dirname, "./templates/chat-notifcation.template.ejs"),
+    opts.notification
+  );
+  const finalHtml = await inlineCss(html, {
+    extraCss: fs
+      .readFileSync(
+        path.join(__dirname, "./templates/chat-notifcation.template.css")
+      )
+      .toString(),
+    url: "https://dashboard.devergroup.io"
+  });
+  return sendMail({
+    to: opts.to,
+    html: finalHtml,
+    subject: opts.notification.title
+  });
+};
 export const sendChatNotification = async (opts: {
   to: string;
   notification: {

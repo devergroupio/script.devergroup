@@ -12,6 +12,7 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import { sendProjectNotification } from "~@/core/utils/send_email";
 import api from "~@/microservices/api";
 import { listen } from "~@/microservices/socket";
 // Listen webSocket
@@ -53,7 +54,29 @@ if (CONFIG.IS_ENABLE_API) {
       followRedirects: true
     })
   );
-
+  app.post("/webhook/unconfirm_project", bodyParser.json(), (req, res) => {
+    const {
+      event: {
+        data: { new: project }
+      }
+    } = req.body;
+    if (project.confirm === 0) {
+      sendProjectNotification({
+        notification: {
+          link: "http://no",
+          msg: `${project.minbudget} - ${project.maxbudget} ${
+            project.currencyCode
+          }`,
+          title: `WAITING: ${project.title}`
+        },
+        to: "devergroupnotification@gmail.com"
+      });
+      res.json({
+        isError: false,
+        message: "successfull"
+      });
+    }
+  });
   app.listen(CONFIG.PORT, () => {
     console.log("> application listen on port", process.env.PORT);
   });
