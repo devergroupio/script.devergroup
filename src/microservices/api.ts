@@ -205,6 +205,21 @@ app.get("/attachment/:message_id/:file", async (req, res) => {
   }
 });
 
+app.get("/attachment", async (req, res) => {
+  const { url } = req.query;
+  try {
+    const { data } = await httpClient.axios.get(("http://" + url) as string, {
+      responseType: "arraybuffer"
+    });
+    return res.end(data);
+  } catch (err) {
+    res.status(500).send({
+      isError: true,
+      message: err.toString()
+    });
+  }
+});
+
 app.get("/outsource-user/:id", async (req, res) => {
   const id = req.params.id;
   try {
