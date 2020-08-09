@@ -71,11 +71,15 @@ if (CONFIG.IS_ENABLE_API) {
         },
         to: "devergroupnotification@gmail.com"
       });
-      res.json({
+      return res.json({
         isError: false,
         message: "successfull"
       });
     }
+    res.json({
+      isError: true,
+      message: "Dont allowed"
+    });
   });
   app.listen(CONFIG.PORT, () => {
     console.log("> application listen on port", process.env.PORT);
