@@ -123,6 +123,7 @@ export const listen = () => {
   };
   sock.onclose = error => {
     console.log("socket closed because", error.toString());
+    console.log(error);
     onClose();
   };
 };

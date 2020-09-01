@@ -65,7 +65,7 @@ const generateToken = payload => {
   return jwt.sign(payload, CONFIG.HASURA_GRAPHQL_JWT_SECRET, {
     algorithm: "HS256",
     subject: "user_authentication",
-    expiresIn: "3d"
+    expiresIn: "90d"
   });
 };
 
