@@ -22,7 +22,7 @@ if (CONFIG.IS_LISTEN_WS) {
 if (CONFIG.IS_ENABLE_API) {
   app.use(
     cors({
-      origin: CONFIG.CORS
+      origin: "*"
     })
   );
   app.use(
