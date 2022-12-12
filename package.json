@@ -56,7 +56,7 @@
     "dotenv-safe": "^6.0.0",
     "ejs": "^3.1.2",
     "error-stack-parser": "^2.0.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "forever": "^1.0.0",
     "glob": "^7.1.6",
     "gmail-send": "^1.8.10",
